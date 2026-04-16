@@ -355,6 +355,76 @@
       font-size: 0.8rem;
     }
 
+    /* ── Timeline ── */
+    .timeline { position: relative; padding: 0; list-style: none; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      padding-left: 36px;
+      padding-bottom: 24px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--teal);
+    }
+    .timeline-year {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+    .timeline-text {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ── Regulatory snapshot ── */
+    .reg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .reg-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .reg-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .reg-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.5; }
+    .reg-card .reg-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .reg-tag-law { background: #d1fae5; color: #065f46; }
+    .reg-tag-pending { background: #fef3c7; color: #92400e; }
+    .reg-tag-eo { background: #dbeafe; color: #1e40af; }
+    .reg-tag-agency { background: #ede9fe; color: #5b21b6; }
+
+    /* ── Custody table ── */
+    .custody-table-wrap { overflow-x: auto; }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       section { padding: 48px 0; }
@@ -366,12 +436,16 @@
 </head>
 <body>
 
+<!-- TODO (deck refresh): Update "Belly-Up Exchanges" slide in CryptoAdvisorGuidance.pdf to include FTX (Nov 2022, $8B shortfall), Celsius (July 2022), Voyager (July 2022), BlockFi (Nov 2022) in addition to Mt. Gox and Quadriga. -->
+<!-- TODO (deck refresh): Replace "CBDCs" with "stablecoins and RWAs" in the "Stay Current on Trends" slide. CBDCs are prohibited under EO 14178 (Jan 2025) and the GENIUS Act. -->
+
 <!-- ── Navigation ── -->
 <nav>
   <div class="container">
     <a class="nav-brand" href="#">Petty Ferguson <span>Consulting</span></a>
     <ul class="nav-links">
       <li><a href="#overview">Overview</a></li>
+      <li><a href="#timeline">Timeline</a></li>
       <li><a href="#resources">Resources</a></li>
       <li><a href="#etfs">ETF Reference</a></li>
       <li><a href="#redflags">Red Flags</a></li>
@@ -406,21 +480,23 @@
     <p class="section-desc">Your clients are already in this market. These numbers show why the conversation can't wait.</p>
 
     <div class="stats-grid">
+      <!-- Verify 17% figure against Security.org 2026 report before broad re-share. Update year if attribution has changed. -->
       <div class="stat-card">
         <div class="stat-num">17%</div>
         <div class="stat-label">of US investors with $10K+ in traditional assets now hold crypto</div>
         <div class="stat-source">Security.org 2026 Crypto Adoption Report</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">$82B+</div>
-        <div class="stat-label">in Bitcoin spot ETF assets across 12 US ETFs</div>
+        <div class="stat-num">$95B+</div>
+        <div class="stat-label">in Bitcoin spot ETF assets across 11 US spot ETFs (as of April 2026)</div>
         <div class="stat-source">BitcoinTreasuries.com / ETF provider data</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">$9.3B</div>
-        <div class="stat-label">in crypto-related fraud losses in 2024 — a 66% increase year-over-year</div>
-        <div class="stat-source">FBI IC3 2024 Annual Report</div>
+        <div class="stat-num">$11.4B</div>
+        <div class="stat-label">in crypto-related fraud losses in 2025 — a 22% increase year-over-year</div>
+        <div class="stat-source">FBI IC3 2025 Annual Report (released April 2026)</div>
       </div>
+      <!-- Verify 42% and 99% figures against Bitwise/VettaFi 2026 Benchmark Survey before broad re-share. -->
       <div class="stat-card">
         <div class="stat-num">42%</div>
         <div class="stat-label">of financial advisors can now buy crypto directly in client accounts</div>
@@ -432,9 +508,9 @@
         <div class="stat-source">Bitwise/VettaFi 2026 Benchmark Survey</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">$12.4B</div>
-        <div class="stat-label">lost to pig butchering scams alone in 2024</div>
-        <div class="stat-source">Chainalysis 2025 Crypto Crime Report</div>
+        <div class="stat-num">$7.2B</div>
+        <div class="stat-label">lost to crypto investment fraud (pig butchering) in 2025 — the single largest crypto-scam category</div>
+        <div class="stat-source">FBI IC3 2025 Annual Report</div>
       </div>
     </div>
 
@@ -447,12 +523,108 @@
       <div class="card">
         <div class="card-icon">⚠️</div>
         <h3>What's Concerning</h3>
-        <p>Extreme volatility persists. Fraud losses hit a record $9.3B in 2024 — seniors are the most targeted demographic. Political entanglement with crypto creates regulatory uncertainty.</p>
+        <p>Extreme volatility persists. Fraud losses hit a record $11.4B in 2025 — adults over 60 lost $4.4B alone, making them the most targeted demographic. Political entanglement with crypto creates regulatory uncertainty.</p>
       </div>
       <div class="card">
         <div class="card-icon">🧭</div>
         <h3>Your Role</h3>
         <p>Clients are making crypto decisions without you. The advisors who engage — even at a basic literacy level — catch scams, improve risk management, and protect AUM that would otherwise walk out the door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Timeline ── -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-label">Context</div>
+    <h2 class="section-title">How We Got Here (2008&ndash;2026)</h2>
+    <p class="section-desc">A condensed timeline of the events that shape how advisors should think about crypto today.</p>
+
+    <ul class="timeline">
+      <li class="timeline-item">
+        <div class="timeline-year">2008</div>
+        <div class="timeline-text">Satoshi Nakamoto publishes the Bitcoin whitepaper</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2009</div>
+        <div class="timeline-text">Bitcoin network launches; genesis block mined January 3</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2013&ndash;2017</div>
+        <div class="timeline-text">First exchange collapses (Mt. Gox 2014); ICO boom and bust</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2020&ndash;2021</div>
+        <div class="timeline-text">Institutional entry begins; BTC crosses $60K; DeFi and NFT cycles</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-text">Terra/Luna, Celsius, BlockFi, Voyager, and FTX collapse. ~$2T in market cap wiped out.</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-text">SEC approves spot Bitcoin ETFs (January 10); spot Ethereum ETFs follow in July. First major institutional access vehicle.</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-text">Regulatory reset: Paul Atkins confirmed as SEC Chair; SAB 121 rescinded; GENIUS Act signed into law; Strategic Bitcoin Reserve established; Coinbase, Kraken, Binance, Ripple cases dismissed.</div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">2026</div>
+        <div class="timeline-text">SEC/CFTC joint interpretive release classifies 16 digital assets as non-securities (March). Spot ETFs now exist for BTC, ETH (with staking), SOL, XRP, LTC, HBAR, DOGE.</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── Regulatory Snapshot ── -->
+<section id="regulation">
+  <div class="container">
+    <div class="section-label">Regulatory Landscape</div>
+    <h2 class="section-title">Regulatory Snapshot (as of April 2026)</h2>
+    <p class="section-desc">What advisors need to know right now about the evolving crypto regulatory framework.</p>
+
+    <div class="reg-grid">
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-agency">Agency Leadership</div>
+        <h4>SEC Chair: Paul Atkins</h4>
+        <p>Confirmed April 2025. Replaced Gary Gensler. Shifted SEC posture from enforcement-first to rulemaking-first.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-agency">Agency Leadership</div>
+        <h4>CFTC Chair: Michael Selig</h4>
+        <p>Confirmed December 2025. Overseeing expanded CFTC role in digital commodity spot markets.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-law">Signed Into Law</div>
+        <h4>SAB 122 (January 2025)</h4>
+        <p>Rescinded SAB 121 &mdash; crypto custody no longer requires balance-sheet liability treatment. This is why banks can now custody digital assets.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-law">Signed Into Law</div>
+        <h4>GENIUS Act (July 18, 2025)</h4>
+        <p>First federal digital asset law. Regulates payment stablecoins. Effective ~November 2026.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-pending">Pending</div>
+        <h4>CLARITY Act</h4>
+        <p>Passed House July 2025, stalled in Senate. Would establish CFTC jurisdiction over digital commodity spot markets. Not yet law.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-agency">Joint Release</div>
+        <h4>SEC/CFTC Interpretive Release (March 2026)</h4>
+        <p>Classified 16 named digital assets (incl. BTC, ETH, XRP, SOL) as non-securities. Establishes current token taxonomy.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-eo">Executive Order</div>
+        <h4>Strategic Bitcoin Reserve (March 2025)</h4>
+        <p>Government holds ~200,000 BTC from forfeitures; will not sell. Established via EO March 6, 2025.</p>
+      </div>
+      <div class="reg-card">
+        <div class="reg-tag reg-tag-law">Enforcement Reset</div>
+        <h4>Major Cases Dismissed</h4>
+        <p>Coinbase (Feb 2025), Kraken (Mar 2025), Binance (May 2025), Ripple (Aug 2025). Fraud cases continue; regulatory overreach cases dropped.</p>
       </div>
     </div>
   </div>
@@ -511,7 +683,7 @@
   <div class="container">
     <div class="section-label">Product Reference</div>
     <h2 class="section-title">Bitcoin Spot ETF Quick Reference</h2>
-    <p class="section-desc">For advisors with client accounts that can hold ETFs. All data as of early 2026 — verify current figures before transacting.</p>
+    <p class="section-desc">For advisors with client accounts that can hold ETFs. All data as of April 2026 — verify current figures before transacting.</p>
 
     <div class="etf-table-wrap">
       <table>
@@ -531,7 +703,7 @@
             <td>iShares Bitcoin Trust</td>
             <td>BlackRock</td>
             <td>0.25%</td>
-            <td>~$49B</td>
+            <td>~$56B</td>
             <td><span class="badge badge-green">Most Liquid</span></td>
           </tr>
           <tr>
@@ -539,22 +711,22 @@
             <td>Fidelity Wise Origin Bitcoin Fund</td>
             <td>Fidelity</td>
             <td>0.25%</td>
-            <td>~$17B</td>
+            <td>~$15B</td>
             <td><span class="badge badge-green">Most Liquid</span></td>
           </tr>
           <tr>
-            <td><span class="ticker">EZBC</span></td>
-            <td>Franklin Bitcoin ETF</td>
-            <td>Franklin Templeton</td>
-            <td>0.19%</td>
-            <td>~$500M</td>
-            <td><span class="badge badge-green">Lowest Cost</span></td>
+            <td><span class="ticker">GBTC</span></td>
+            <td>Grayscale Bitcoin Trust</td>
+            <td>Grayscale</td>
+            <td>1.50%</td>
+            <td>~$15B</td>
+            <td><span class="badge badge-red">Avoid &mdash; High Fee</span></td>
           </tr>
           <tr>
-            <td><span class="ticker">BITB</span></td>
-            <td>Bitwise Bitcoin ETF</td>
-            <td>Bitwise</td>
-            <td>0.20%</td>
+            <td><span class="ticker">BTC</span></td>
+            <td>Grayscale Bitcoin Mini Trust</td>
+            <td>Grayscale</td>
+            <td>0.15%</td>
             <td>~$4B</td>
             <td><span class="badge badge-green">Lowest Cost</span></td>
           </tr>
@@ -563,15 +735,15 @@
             <td>ARK 21Shares Bitcoin ETF</td>
             <td>ARK Invest / 21Shares</td>
             <td>0.21%</td>
-            <td>~$4B</td>
+            <td>~$3.5B</td>
             <td><span class="badge badge-yellow">Solid Option</span></td>
           </tr>
           <tr>
-            <td><span class="ticker">BTCO</span></td>
-            <td>Invesco Galaxy Bitcoin ETF</td>
-            <td>Invesco / Galaxy</td>
-            <td>0.25%</td>
-            <td>~$600M</td>
+            <td><span class="ticker">BITB</span></td>
+            <td>Bitwise Bitcoin ETF</td>
+            <td>Bitwise</td>
+            <td>0.20%</td>
+            <td>~$3B</td>
             <td><span class="badge badge-yellow">Solid Option</span></td>
           </tr>
           <tr>
@@ -579,15 +751,31 @@
             <td>VanEck Bitcoin ETF</td>
             <td>VanEck</td>
             <td>0.20%</td>
-            <td>~$1.2B</td>
+            <td>~$1B</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">BTCO</span></td>
+            <td>Invesco Galaxy Bitcoin ETF</td>
+            <td>Invesco / Galaxy</td>
+            <td>0.25%</td>
+            <td>~$500M</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">EZBC</span></td>
+            <td>Franklin Bitcoin ETF</td>
+            <td>Franklin Templeton</td>
+            <td>0.19%</td>
+            <td>~$400M</td>
             <td><span class="badge badge-yellow">Solid Option</span></td>
           </tr>
           <tr>
             <td><span class="ticker">BRRR</span></td>
-            <td>Coinshares Valkyrie Bitcoin Fund</td>
+            <td>CoinShares Valkyrie Bitcoin Fund</td>
             <td>Valkyrie / CoinShares</td>
             <td>0.25%</td>
-            <td>~$600M</td>
+            <td>~$500M</td>
             <td><span class="badge badge-yellow">Solid Option</span></td>
           </tr>
           <tr>
@@ -598,14 +786,6 @@
             <td>~$100M</td>
             <td><span class="badge badge-yellow">Solid Option</span></td>
           </tr>
-          <tr>
-            <td><span class="ticker">GBTC</span></td>
-            <td>Grayscale Bitcoin Trust</td>
-            <td>Grayscale</td>
-            <td>1.50%</td>
-            <td>~$18B</td>
-            <td><span class="badge badge-red">Avoid — High Fee</span></td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -613,6 +793,57 @@
     <p style="margin-top:16px; font-size:0.8rem; color:var(--gray);">
       ⚠️ Confirm NWM platform availability and current pricing before recommending any product. This table is for educational reference only and does not constitute investment advice. Consult Nimshi or NWM compliance for account-type eligibility.
     </p>
+
+    <!-- Custody Options for RIAs -->
+    <div style="margin-top:32px;">
+      <h3 style="font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:16px;">Custody Options for RIAs</h3>
+      <div class="custody-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Custodian</th>
+              <th>Charter / License</th>
+              <th>Notable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Fidelity Digital Assets</strong></td>
+              <td>NY trust + OCC national trust bank charter</td>
+              <td>Backed by $4T+ parent; $100M+ insurance</td>
+            </tr>
+            <tr>
+              <td><strong>Coinbase Custody</strong></td>
+              <td>NYDFS trust charter</td>
+              <td>Primary custodian for most spot crypto ETFs</td>
+            </tr>
+            <tr>
+              <td><strong>BitGo</strong></td>
+              <td>OCC national bank charter (Dec 2025)</td>
+              <td>$250M insurance; $90B+ AUC</td>
+            </tr>
+            <tr>
+              <td><strong>Anchorage Digital</strong></td>
+              <td>OCC federal bank charter (Jan 2021)</td>
+              <td>First crypto-native federal bank</td>
+            </tr>
+            <tr>
+              <td><strong>BNY Mellon</strong></td>
+              <td>Traditional bank</td>
+              <td>Integrated crypto into traditional custody</td>
+            </tr>
+            <tr>
+              <td><strong>Gemini Trust</strong></td>
+              <td>NYDFS regulated</td>
+              <td>$125M insurance</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px; font-size:0.8rem; color:var(--gray);">
+        Confirm NWM platform availability before recommending any custodian to clients.
+      </p>
+    </div>
 
     <div style="margin-top:32px; background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
       <h3 style="font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Conservative Allocation Framework</h3>
@@ -622,6 +853,89 @@
         <div><strong style="color:var(--teal);">Entry method:</strong><br />Dollar-cost average over 6–12 months</div>
         <div><strong style="color:var(--teal);">Rebalance:</strong><br />When crypto exceeds target allocation</div>
       </div>
+    </div>
+
+    <!-- Tax Considerations -->
+    <div style="margin-top:32px; background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
+      <h3 style="font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Tax Considerations</h3>
+      <div style="font-size:0.9rem; color:var(--gray); line-height:1.6;">
+        <p style="margin-bottom:12px;"><strong style="color:var(--navy);">Form 1099-DA is new for the 2025 tax year.</strong> Brokers issued first 1099-DAs in February 2026 reporting gross proceeds only. Cost basis reporting becomes mandatory for the 2026 tax year (forms issued 2027) on assets acquired January 2026 or later at the same broker.</p>
+        <p style="margin-bottom:12px;"><strong style="color:var(--navy);">Wash sale rules do not currently apply to directly held crypto.</strong> Because crypto is classified as property rather than securities, IRC &sect;1091 does not apply. Clients can sell at a loss and immediately repurchase. This is a legitimate tax-loss harvesting tool that may not survive &mdash; bipartisan proposals to extend wash sale rules to digital assets are active in Congress.</p>
+        <p><strong style="color:var(--navy);">Spot crypto ETFs are treated as securities for tax purposes.</strong> Wash sale rules DO apply to ETF shares. Advisors should distinguish between direct crypto holdings and ETF exposure when modeling client tax scenarios.</p>
+      </div>
+    </div>
+
+    <!-- Non-BTC Spot Crypto ETFs -->
+    <div style="margin-top:32px;">
+      <h3 style="font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:6px;">Beyond Bitcoin: Non-BTC Spot Crypto ETFs</h3>
+      <p style="font-size:0.85rem; color:var(--gray); margin-bottom:16px;">A quick reference for the expanding universe of spot crypto ETFs beyond Bitcoin. Same caveats as above.</p>
+
+      <h4 style="font-size:0.9rem; font-weight:700; color:var(--teal); margin-bottom:8px;">Ethereum Spot ETFs (with staking)</h4>
+      <div class="etf-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ticker</th><th>Name</th><th>Sponsor</th><th>Expense Ratio</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ticker">ETHA</span></td><td>iShares Ethereum Trust</td><td>BlackRock</td><td>0.25%</td><td>Largest ETH ETF</td></tr>
+            <tr><td><span class="ticker">FETH</span></td><td>Fidelity Ethereum Fund</td><td>Fidelity</td><td>0.25%</td><td></td></tr>
+            <tr><td><span class="ticker">ETH</span></td><td>Grayscale Ethereum Mini Trust</td><td>Grayscale</td><td>0.15%</td><td>Lowest cost</td></tr>
+            <tr><td><span class="ticker">ETHE</span></td><td>Grayscale Ethereum Trust</td><td>Grayscale</td><td>2.50%</td><td>Legacy; high fee</td></tr>
+            <tr><td><span class="ticker">ETHB</span></td><td>iShares Ethereum Trust (Staking)</td><td>BlackRock</td><td>TBD</td><td>Staking 70&ndash;95%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-size:0.9rem; font-weight:700; color:var(--teal); margin-top:20px; margin-bottom:8px;">Solana Spot ETFs</h4>
+      <div class="etf-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ticker</th><th>Name</th><th>Sponsor</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ticker">BSOL</span></td><td>Bitwise Solana ETF</td><td>Bitwise</td></tr>
+            <tr><td><span class="ticker">GSOL</span></td><td>Grayscale Solana Trust</td><td>Grayscale</td></tr>
+            <tr><td><span class="ticker">VSOL</span></td><td>VanEck Solana ETF</td><td>VanEck</td></tr>
+            <tr><td><span class="ticker">FSOL</span></td><td>Fidelity Solana Fund</td><td>Fidelity</td></tr>
+            <tr><td><span class="ticker">TSOL</span></td><td>21Shares Core Solana ETF</td><td>21Shares</td></tr>
+            <tr><td><span class="ticker">SOLC</span></td><td>Canary Solana ETF</td><td>Canary Capital</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-size:0.9rem; font-weight:700; color:var(--teal); margin-top:20px; margin-bottom:8px;">XRP Spot ETFs</h4>
+      <div class="etf-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ticker</th><th>Name</th><th>Sponsor</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ticker">XRPC</span></td><td>Canary XRP ETF</td><td>Canary Capital</td></tr>
+            <tr><td><span class="ticker">XRP</span></td><td>Bitwise XRP ETF</td><td>Bitwise</td></tr>
+            <tr><td><span class="ticker">EZRP</span></td><td>Franklin XRP ETF</td><td>Franklin Templeton</td></tr>
+            <tr><td><span class="ticker">TOXR</span></td><td>21Shares Core XRP ETF</td><td>21Shares</td></tr>
+            <tr><td><span class="ticker">XRPM</span></td><td>Amplify XRP ETF</td><td>Amplify</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-size:0.9rem; font-weight:700; color:var(--teal); margin-top:20px; margin-bottom:8px;">Other Spot Crypto ETFs</h4>
+      <div class="etf-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ticker</th><th>Asset</th><th>Name</th><th>Sponsor</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ticker">LTCC</span></td><td>Litecoin</td><td>Canary Litecoin ETF</td><td>Canary Capital</td></tr>
+            <tr><td><span class="ticker">HBR</span></td><td>HBAR</td><td>Canary HBAR ETF</td><td>Canary Capital</td></tr>
+            <tr><td><span class="ticker">DOJE</span></td><td>Dogecoin</td><td>REX-Osprey DOGE ETF</td><td>REX-Osprey</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:16px; font-size:0.8rem; color:var(--gray);">
+        Non-BTC ETFs are newer and less liquid than Bitcoin ETFs. Confirm NWM platform availability and verify current AUM/expense ratios before recommending.
+      </p>
     </div>
   </div>
 </section>
@@ -744,6 +1058,7 @@
     <p class="section-desc">Questions, client situations, or follow-up topics — reach out directly. We work with advisors, not just their clients.</p>
 
     <div class="contact-grid">
+      <!-- Verify with Corey: is "Founder, The Bitcoin Podcast" correct, or should it be "Co-founder" or "Host"? -->
       <div class="contact-card">
         <h3>Demetrick Ferguson</h3>
         <div class="role">Digital Asset Advisory · Consulting</div>
@@ -761,7 +1076,7 @@
         <ul class="creds">
           <li>PhD, Computational Chemical Physics, Texas Tech</li>
           <li>Blockchain &amp; Data Science curriculum, Accenture</li>
-          <li>Crypto security advisor, IFT ($500M+ treasury)</li>
+          <li>Chief Evangelist, Institute of Free Technology (IFT)</li>
           <li style="margin-top:10px;"><a href="mailto:corey@petty.services">corey@petty.services</a></li>
         </ul>
       </div>
