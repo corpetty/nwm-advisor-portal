@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Assets: Advisor Resource Portal | Petty Ferguson Consulting</title>
+  <meta name="description" content="Practical digital asset resources for Northwestern Mutual financial advisors. Tools, checklists, and guidance to help you protect and educate your clients." />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f8f9fa;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* ── Color tokens ── */
+    :root {
+      --navy:    #0d1b35;
+      --teal:    #0e6b6b;
+      --teal-lt: #1a9a9a;
+      --gold:    #c9a84c;
+      --cream:   #faf8f3;
+      --gray:    #6b7280;
+      --gray-lt: #f3f4f6;
+      --red:     #b91c1c;
+      --border:  #e5e7eb;
+      --radius:  8px;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 72px 0; }
+    section:nth-child(even) { background: var(--cream); }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--navy);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    .nav-brand {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
+      padding: 88px 0 80px;
+      color: #fff;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    #hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    #hero h1 span { color: var(--gold); }
+    #hero p.subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 580px;
+      margin-bottom: 32px;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero-meta strong { color: rgba(255,255,255,0.9); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+    .btn-primary:hover { background: var(--teal-lt); border-color: var(--teal-lt); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.4);
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+    .btn-sm { padding: 8px 18px; font-size: 0.825rem; }
+    .btn-teal-outline {
+      background: transparent;
+      color: var(--teal);
+      border-color: var(--teal);
+    }
+    .btn-teal-outline:hover { background: var(--teal); color: #fff; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ── Section headers ── */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .section-desc {
+      font-size: 1rem;
+      color: var(--gray);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .stat-card .stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+    .stat-card .stat-source {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+
+    /* ── Three-col cards ── */
+    .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .card-icon {
+      width: 40px; height: 40px;
+      background: var(--teal);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+    }
+    .card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .card p { font-size: 0.9rem; color: var(--gray); }
+
+    /* ── Download cards ── */
+    .downloads-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .download-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .download-card .doc-type {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .download-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .download-card p { font-size: 0.875rem; color: var(--gray); flex: 1; }
+
+    /* ── ETF table ── */
+    .etf-table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th {
+      background: var(--navy);
+      color: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--gray-lt); }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: var(--red); }
+    .ticker { font-weight: 700; font-family: 'Courier New', monospace; color: var(--teal); }
+
+    /* ── Red flags ── */
+    .flags-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .flag-group { }
+    .flag-group h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .flag-list { list-style: none; }
+    .flag-list li {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .flag-list li:last-child { border-bottom: none; }
+    .flag-list .flag-icon { flex-shrink: 0; font-size: 1rem; }
+    .alert-box {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #f97316;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .alert-box strong { color: #c2410c; display: block; margin-bottom: 8px; }
+    .checklist-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.875rem;
+      padding: 6px 0;
+    }
+    .check-box {
+      width: 16px; height: 16px;
+      border: 2px solid #d1d5db;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── Trifold preview ── */
+    .trifold-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .trifold-img {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    /* ── Contact ── */
+    #contact { background: var(--navy); color: #fff; }
+    #contact .section-label { color: var(--gold); }
+    #contact .section-title { color: #fff; }
+    #contact .section-desc { color: rgba(255,255,255,0.7); }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .contact-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .contact-card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .contact-card .role { font-size: 0.825rem; color: var(--gold); margin-bottom: 12px; }
+    .contact-card .creds { list-style: none; }
+    .contact-card .creds li { font-size: 0.85rem; color: rgba(255,255,255,0.65); padding: 3px 0; }
+    .contact-card a { color: var(--teal-lt); text-decoration: none; }
+    .contact-card a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      background: #060e1e;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      section { padding: 48px 0; }
+      .nav-links { display: none; }
+      table { font-size: 0.8rem; }
+      th, td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="container">
+    <a class="nav-brand" href="#">Petty Ferguson <span>Consulting</span></a>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#etfs">ETF Reference</a></li>
+      <li><a href="#redflags">Red Flags</a></li>
+      <li><a href="#trifold">Handout</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Northwestern Mutual · April 2026</div>
+    <h1>Digital Assets:<br /><span>A Practical Guide</span><br />for Financial Advisors</h1>
+    <p class="subtitle">Tools, references, and frameworks to help you navigate crypto conversations with clients — confidently and safely.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#resources">Download Resources</a>
+      <a class="btn btn-outline" href="#overview">View Key Stats</a>
+    </div>
+    <div class="hero-meta" style="margin-top:40px;">
+      <div><strong>Demetrick Ferguson</strong> — Digital Asset Advisory</div>
+      <div><strong>Dr. Corey Petty</strong> — Crypto Security &amp; Infrastructure</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Overview / Stats ── -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">State of the Market · 2026</div>
+    <h2 class="section-title">Where Crypto Stands Today</h2>
+    <p class="section-desc">Your clients are already in this market. These numbers show why the conversation can't wait.</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">17%</div>
+        <div class="stat-label">of US investors with $10K+ in traditional assets now hold crypto</div>
+        <div class="stat-source">Security.org 2026 Crypto Adoption Report</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$82B+</div>
+        <div class="stat-label">in Bitcoin spot ETF assets across 12 US ETFs</div>
+        <div class="stat-source">BitcoinTreasuries.com / ETF provider data</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$9.3B</div>
+        <div class="stat-label">in crypto-related fraud losses in 2024 — a 66% increase year-over-year</div>
+        <div class="stat-source">FBI IC3 2024 Annual Report</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">42%</div>
+        <div class="stat-label">of financial advisors can now buy crypto directly in client accounts</div>
+        <div class="stat-source">Bitwise/VettaFi 2026 Benchmark Survey</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">99%</div>
+        <div class="stat-label">of advisors with crypto allocations plan to maintain or increase in 2026</div>
+        <div class="stat-source">Bitwise/VettaFi 2026 Benchmark Survey</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$12.4B</div>
+        <div class="stat-label">lost to pig butchering scams alone in 2024</div>
+        <div class="stat-source">Chainalysis 2025 Crypto Crime Report</div>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>What's Working</h3>
+        <p>Bitcoin spot ETFs brought institutional access. Stablecoins are processing trillions in transfers. Regulatory frameworks are emerging (GENIUS Act signed). Advisor access has doubled since 2023.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <h3>What's Concerning</h3>
+        <p>Extreme volatility persists. Fraud losses hit a record $9.3B in 2024 — seniors are the most targeted demographic. Political entanglement with crypto creates regulatory uncertainty.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧭</div>
+        <h3>Your Role</h3>
+        <p>Clients are making crypto decisions without you. The advisors who engage — even at a basic literacy level — catch scams, improve risk management, and protect AUM that would otherwise walk out the door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Resources / Downloads ── -->
+<section id="resources">
+  <div class="container">
+    <div class="section-label">Downloads</div>
+    <h2 class="section-title">Advisor Resource Kit</h2>
+    <p class="section-desc">All materials from today's session, free to download and use with your clients.</p>
+
+    <div class="downloads-grid">
+      <div class="download-card">
+        <div class="doc-type">📊 Presentation</div>
+        <h3>Crypto Advisor Guidance Deck</h3>
+        <p>The full slide deck from today's session. Covers crypto history, volatility, custody, security, and advisor positioning.</p>
+        <a class="btn btn-primary btn-sm" href="assets/pdfs/CryptoAdvisorGuidance.pdf" download>Download PDF</a>
+      </div>
+
+      <div class="download-card">
+        <div class="doc-type">📋 Assessment Tool</div>
+        <h3>Client Crypto Readiness Assessment</h3>
+        <p>A scored 6-section questionnaire to identify client exposure, custody gaps, security posture, and scam risk. Use in your next client meeting.</p>
+        <a class="btn btn-teal-outline btn-sm" href="assets/pdfs/client-crypto-readiness-assessment.pdf" download>Download PDF</a>
+      </div>
+
+      <div class="download-card">
+        <div class="doc-type">🚨 Reference Card</div>
+        <h3>Scam Red Flag Reference Card</h3>
+        <p>Quick-reference guide to the language, channels, and manipulation tactics used in crypto scams. Keep it handy for client conversations.</p>
+        <a class="btn btn-teal-outline btn-sm" href="assets/pdfs/scam-red-flag-reference-card.pdf" download>Download PDF</a>
+      </div>
+
+      <div class="download-card">
+        <div class="doc-type">📁 Documentation</div>
+        <h3>Client Crypto Documentation Template</h3>
+        <p>A structured template to document client crypto holdings, custody setup, security posture, and estate planning. Pairs with the readiness assessment.</p>
+        <a class="btn btn-teal-outline btn-sm" href="assets/pdfs/client-crypto-documentation-template.pdf" download>Download PDF</a>
+      </div>
+
+      <div class="download-card">
+        <div class="doc-type">🖨️ Handout</div>
+        <h3>Conference Trifold (Print-Ready)</h3>
+        <p>The physical handout from today's event. Covers custody options, security rules, and a client checklist you can use at your next annual review.</p>
+        <a class="btn btn-teal-outline btn-sm" href="assets/img/trifold-outside.png" download>Download Outside</a>
+        &nbsp;
+        <a class="btn btn-teal-outline btn-sm" href="assets/img/trifold-inside.png" download>Download Inside</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ETF Reference ── -->
+<section id="etfs">
+  <div class="container">
+    <div class="section-label">Product Reference</div>
+    <h2 class="section-title">Bitcoin Spot ETF Quick Reference</h2>
+    <p class="section-desc">For advisors with client accounts that can hold ETFs. All data as of early 2026 — verify current figures before transacting.</p>
+
+    <div class="etf-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Name</th>
+            <th>Sponsor</th>
+            <th>Expense Ratio</th>
+            <th>Est. AUM</th>
+            <th>NWM Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticker">IBIT</span></td>
+            <td>iShares Bitcoin Trust</td>
+            <td>BlackRock</td>
+            <td>0.25%</td>
+            <td>~$49B</td>
+            <td><span class="badge badge-green">Most Liquid</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">FBTC</span></td>
+            <td>Fidelity Wise Origin Bitcoin Fund</td>
+            <td>Fidelity</td>
+            <td>0.25%</td>
+            <td>~$17B</td>
+            <td><span class="badge badge-green">Most Liquid</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">EZBC</span></td>
+            <td>Franklin Bitcoin ETF</td>
+            <td>Franklin Templeton</td>
+            <td>0.19%</td>
+            <td>~$500M</td>
+            <td><span class="badge badge-green">Lowest Cost</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">BITB</span></td>
+            <td>Bitwise Bitcoin ETF</td>
+            <td>Bitwise</td>
+            <td>0.20%</td>
+            <td>~$4B</td>
+            <td><span class="badge badge-green">Lowest Cost</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">ARKB</span></td>
+            <td>ARK 21Shares Bitcoin ETF</td>
+            <td>ARK Invest / 21Shares</td>
+            <td>0.21%</td>
+            <td>~$4B</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">BTCO</span></td>
+            <td>Invesco Galaxy Bitcoin ETF</td>
+            <td>Invesco / Galaxy</td>
+            <td>0.25%</td>
+            <td>~$600M</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">HODL</span></td>
+            <td>VanEck Bitcoin ETF</td>
+            <td>VanEck</td>
+            <td>0.20%</td>
+            <td>~$1.2B</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">BRRR</span></td>
+            <td>Coinshares Valkyrie Bitcoin Fund</td>
+            <td>Valkyrie / CoinShares</td>
+            <td>0.25%</td>
+            <td>~$600M</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">BTCW</span></td>
+            <td>WisdomTree Bitcoin Fund</td>
+            <td>WisdomTree</td>
+            <td>0.25%</td>
+            <td>~$100M</td>
+            <td><span class="badge badge-yellow">Solid Option</span></td>
+          </tr>
+          <tr>
+            <td><span class="ticker">GBTC</span></td>
+            <td>Grayscale Bitcoin Trust</td>
+            <td>Grayscale</td>
+            <td>1.50%</td>
+            <td>~$18B</td>
+            <td><span class="badge badge-red">Avoid — High Fee</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:16px; font-size:0.8rem; color:var(--gray);">
+      ⚠️ Confirm NWM platform availability and current pricing before recommending any product. This table is for educational reference only and does not constitute investment advice. Consult Nimshi or NWM compliance for account-type eligibility.
+    </p>
+
+    <div style="margin-top:32px; background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
+      <h3 style="font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:12px;">Conservative Allocation Framework</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; font-size:0.9rem;">
+        <div><strong style="color:var(--teal);">Allocation:</strong><br />1–5% of total portfolio</div>
+        <div><strong style="color:var(--teal);">Asset:</strong><br />Bitcoin only — via regulated ETF</div>
+        <div><strong style="color:var(--teal);">Entry method:</strong><br />Dollar-cost average over 6–12 months</div>
+        <div><strong style="color:var(--teal);">Rebalance:</strong><br />When crypto exceeds target allocation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Red Flags ── -->
+<section id="redflags">
+  <div class="container">
+    <div class="section-label">Scam Protection</div>
+    <h2 class="section-title">Red Flag Reference</h2>
+    <p class="section-desc">Keep this section bookmarked. When a client brings up a crypto "opportunity," run through these before anything else.</p>
+
+    <div class="flags-grid">
+      <div class="flag-group">
+        <h3>🚨 Language Red Flags</h3>
+        <ul class="flag-list">
+          <li><span class="flag-icon">🔴</span> "Guaranteed returns" — no legitimate investment guarantees anything</li>
+          <li><span class="flag-icon">🔴</span> "Risk-free" — crypto is inherently volatile; this is a lie</li>
+          <li><span class="flag-icon">🔴</span> "Limited time offer" — pressure tactics; legitimate opportunities don't expire in 24 hours</li>
+          <li><span class="flag-icon">🔴</span> "Double your money" — classic scam promise</li>
+          <li><span class="flag-icon">🔴</span> "Only insiders know about this" — if it were real, they wouldn't be telling strangers</li>
+          <li><span class="flag-icon">🔴</span> "This is the next Bitcoin" — almost all alternative tokens fail</li>
+          <li><span class="flag-icon">🔴</span> "Celebrity X endorsed this" — fake endorsements are rampant; verify independently</li>
+        </ul>
+      </div>
+
+      <div class="flag-group">
+        <h3>⚠️ Channel Red Flags</h3>
+        <ul class="flag-list">
+          <li><span class="flag-icon">🔴</span> Unsolicited DM via Telegram, WhatsApp, or Discord — scammers' preferred method</li>
+          <li><span class="flag-icon">🔴</span> Social media comment or reply — impersonation is trivial on these platforms</li>
+          <li><span class="flag-icon">🔴</span> Dating app match — the "pig butchering" romance scam vector</li>
+          <li><span class="flag-icon">🔴</span> A "friend" the client has never met in person</li>
+          <li><span class="flag-icon">🔴</span> Unsolicited email with investment opportunity</li>
+          <li><span class="flag-icon">🟡</span> YouTube/TikTok influencer — many are paid promoters, not advisors</li>
+        </ul>
+      </div>
+
+      <div class="flag-group">
+        <h3>🎭 What Scammers Say About Advisors</h3>
+        <ul class="flag-list">
+          <li><span class="flag-icon">💬</span> "What are their credentials?"</li>
+          <li><span class="flag-icon">💬</span> "They know old money — what do they know about new money?"</li>
+          <li><span class="flag-icon">💬</span> "They just want fees; that's why they don't care about crypto."</li>
+          <li><span class="flag-icon">💬</span> "Are they protecting you or preventing you?"</li>
+          <li><span class="flag-icon">💬</span> "Do they even have Telegram?"</li>
+        </ul>
+        <p style="font-size:0.85rem; color:var(--gray); margin-top:12px; padding:12px; background:#f8fafc; border-radius:6px; border-left:3px solid var(--teal);">These lines are designed to isolate clients from trusted advisors. <strong>Your literacy is your best counter-argument.</strong></p>
+      </div>
+
+      <div class="flag-group">
+        <h3>🕵️ Common Scam Types</h3>
+        <ul class="flag-list">
+          <li><span class="flag-icon">💔</span> <span><strong>Pig Butchering:</strong> Fake romance → trust-building → "investment" → funds drained over time</span></li>
+          <li><span class="flag-icon">🏦</span> <span><strong>Fake Exchange:</strong> Convincing website, shows fake gains, blocks withdrawals</span></li>
+          <li><span class="flag-icon">🎭</span> <span><strong>Impersonation:</strong> Pretends to be Coinbase support, a celebrity, or a known project</span></li>
+          <li><span class="flag-icon">🏃</span> <span><strong>Rug Pull:</strong> Legitimate-looking project, team disappears with funds</span></li>
+          <li><span class="flag-icon">📧</span> <span><strong>Phishing:</strong> Fake emails or sites that capture login credentials</span></li>
+          <li><span class="flag-icon">📈</span> <span><strong>Pump &amp; Dump:</strong> Hype a worthless token, sell high, leave buyers holding nothing</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      <strong>Quick Client Checklist — Run Through This Before Any Crypto Decision</strong>
+      <div class="checklist-2col">
+        <div class="check-item"><div class="check-box"></div><span>Did someone approach <em>you</em>, or did you find <em>them</em>?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Are you being asked to act quickly?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Were you asked to move funds to a new wallet or exchange?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Are returns described as "guaranteed" or "risk-free"?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Is the communication happening on Telegram, WhatsApp, or Discord?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Did a romantic interest introduce you to this opportunity?</span></div>
+        <div class="check-item"><div class="check-box"></div><span>Are you being asked to keep this secret from family or your advisor?</span></div>
+      </div>
+      <p style="margin-top:16px; font-size:0.875rem; font-weight:600; color:#c2410c;">2+ "Yes" answers = HIGH probability of scam. Pause and investigate.</p>
+    </div>
+
+    <div style="margin-top:24px; background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:24px;">
+      <h3 style="font-size:0.9rem; font-weight:700; color:var(--navy); margin-bottom:12px;">📞 Reporting Resources</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.875rem;">
+        <div><strong>FBI IC3</strong><br /><a href="https://ic3.gov" target="_blank" rel="noopener">ic3.gov</a></div>
+        <div><strong>FTC</strong><br /><a href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov</a></div>
+        <div><strong>SEC</strong><br /><a href="https://sec.gov/tcr" target="_blank" rel="noopener">sec.gov/tcr</a></div>
+        <div><strong>State AG</strong><br />Varies by state</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Trifold Preview ── -->
+<section id="trifold">
+  <div class="container">
+    <div class="section-label">Conference Handout</div>
+    <h2 class="section-title">Session Trifold</h2>
+    <p class="section-desc">The handout from today's event. Download either side for your records or to share with clients.</p>
+
+    <div class="trifold-grid">
+      <div>
+        <p style="font-size:0.8rem; font-weight:600; color:var(--gray); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Outside</p>
+        <img class="trifold-img" src="assets/img/trifold-outside.png" alt="Trifold outside — Cover, advisor context, presenter bios" />
+        <div style="margin-top:12px;">
+          <a class="btn btn-teal-outline btn-sm" href="assets/img/trifold-outside.png" download>Download Outside</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:0.8rem; font-weight:600; color:var(--gray); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Inside</p>
+        <img class="trifold-img" src="assets/img/trifold-inside.png" alt="Trifold inside — Custody options, security rules, client checklist" />
+        <div style="margin-top:12px;">
+          <a class="btn btn-teal-outline btn-sm" href="assets/img/trifold-inside.png" download>Download Inside</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Connect With Us</div>
+    <h2 class="section-title">We're Here After the Presentation</h2>
+    <p class="section-desc">Questions, client situations, or follow-up topics — reach out directly. We work with advisors, not just their clients.</p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>Demetrick Ferguson</h3>
+        <div class="role">Digital Asset Advisory · Consulting</div>
+        <ul class="creds">
+          <li>10+ years management consulting</li>
+          <li>Founder, The Bitcoin Podcast (4.5M+ downloads)</li>
+          <li>BA Mathematics, Texas Tech University</li>
+          <li style="margin-top:10px;"><a href="https://fergulati.com" target="_blank" rel="noopener">fergulati.com</a></li>
+        </ul>
+      </div>
+
+      <div class="contact-card">
+        <h3>Dr. Corey Petty</h3>
+        <div class="role">Crypto Security · Blockchain Infrastructure</div>
+        <ul class="creds">
+          <li>PhD, Computational Chemical Physics, Texas Tech</li>
+          <li>Blockchain &amp; Data Science curriculum, Accenture</li>
+          <li>Crypto security advisor, IFT ($500M+ treasury)</li>
+          <li style="margin-top:10px;"><a href="mailto:corey@petty.services">corey@petty.services</a></li>
+        </ul>
+      </div>
+
+      <div class="contact-card">
+        <h3>Petty Ferguson Consulting</h3>
+        <div class="role">Digital Asset Education for Financial Professionals</div>
+        <ul class="creds">
+          <li>Advisor literacy workshops</li>
+          <li>Client-facing crypto risk reviews</li>
+          <li>Scam identification &amp; response</li>
+          <li>Institutional crypto strategy</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="margin-top:32px; font-size:0.8rem; color:rgba(255,255,255,0.35); max-width:600px;">
+      All materials on this site are for educational purposes only and do not constitute legal, tax, or investment advice. Content prepared for the Northwestern Mutual advisor workshop, April 2026. Fergulati Services · Independent Contractor.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Petty Ferguson Consulting · <a href="mailto:corey@petty.services" style="color:inherit;">corey@petty.services</a> · <a href="https://fergulati.com" target="_blank" rel="noopener" style="color:inherit;">fergulati.com</a></p>
+</footer>
+
+</body>
+</html>
