@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Crypto Readiness Assessment — Petty-Ferguson Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --teal: #1a8c7a;
+  --teal-light: #22b5a0;
+  --gold: #c9a84c;
+  --gold-light: #e0c068;
+  --cream: #f5f0e8;
+  --red-bg: rgba(192,57,43,0.09);
+  --text-light: #e8e0d4;
+  --text-muted: #8fa3b0;
+  --border: rgba(201,168,76,0.2);
+  --max: 780px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--navy);
+  color: var(--cream);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,27,42,0.97);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+}
+
+.logo-lockup { display: flex; align-items: center; gap: 14px; }
+
+.pf-logo { width: 46px; height: 46px; flex-shrink: 0; }
+.pf-logo svg { width: 100%; height: 100%; }
+
+.brand-name { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-name .primary {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600;
+  color: var(--cream); letter-spacing: 0.04em;
+}
+.brand-name .secondary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem; color: var(--gold);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+.header-right { display: flex; align-items: center; gap: 14px; }
+
+.score-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid var(--border);
+  border-radius: 24px; padding: 6px 18px;
+  font-family: 'DM Mono', monospace; font-size: 0.78rem;
+  color: var(--gold); letter-spacing: 0.04em;
+  transition: all 0.4s;
+}
+.score-pill .sv {
+  font-size: 1.1rem; font-weight: 500; color: var(--gold-light);
+}
+
+.btn-print {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.35);
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 18px; border-radius: 4px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-print:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 1;
+  max-width: var(--max); margin: 0 auto;
+  padding: 64px 2rem 44px;
+}
+.hero-tag {
+  font-family: 'DM Mono', monospace; font-size: 0.7rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--teal-light); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-tag::before { content:''; display:block; width:28px; height:1px; background:var(--teal-light); }
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 700; line-height: 1.1;
+  color: var(--cream); margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero p { font-size: 1rem; color: var(--text-muted); max-width: 560px; margin-bottom: 32px; }
+
+/* Client info */
+.client-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.info-field { display: flex; flex-direction: column; gap: 5px; }
+.info-field label {
+  font-family: 'DM Mono', monospace; font-size: 0.63rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
+}
+.info-field input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px; padding: 10px 13px;
+  color: var(--cream); font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem; outline: none;
+  transition: border-color 0.2s;
+}
+.info-field input:focus { border-color: rgba(201,168,76,0.5); background: rgba(255,255,255,0.06); }
+.info-field input::placeholder { color: rgba(232,224,212,0.22); }
+
+/* ── MAIN ── */
+main {
+  position: relative; z-index: 1;
+  max-width: var(--max); margin: 0 auto;
+  padding: 0 2rem 80px;
+}
+
+/* Section card */
+.sec {
+  background: rgba(22,34,54,0.65);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 12px; margin-bottom: 18px;
+  overflow: hidden; transition: border-color 0.3s;
+  animation: fadeUp 0.4s ease both;
+}
+.sec:nth-child(1){animation-delay:.05s}
+.sec:nth-child(2){animation-delay:.10s}
+.sec:nth-child(3){animation-delay:.15s}
+.sec:nth-child(4){animation-delay:.20s}
+.sec:nth-child(5){animation-delay:.25s}
+.sec:nth-child(6){animation-delay:.30s}
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.sec:hover { border-color: rgba(201,168,76,0.22); }
+
+.sec-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 26px; cursor: pointer; user-select: none; gap: 16px;
+}
+.sec-head-left { display: flex; align-items: center; gap: 16px; flex: 1; }
+
+.sec-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 0.78rem;
+  color: var(--gold); flex-shrink: 0;
+  background: rgba(201,168,76,0.06);
+}
+
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 600; color: var(--cream);
+}
+.sec-sub {
+  font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.12em; color: var(--text-muted);
+  text-transform: uppercase; margin-top: 2px;
+}
+
+.sec-badge {
+  font-family: 'DM Mono', monospace; font-size: 0.75rem;
+  color: var(--text-muted); background: rgba(255,255,255,0.04);
+  border-radius: 4px; padding: 5px 12px; white-space: nowrap;
+  transition: color 0.3s;
+}
+.sec-badge .bv { color: var(--gold-light); font-weight: 500; transition: color 0.3s; }
+
+.chevron {
+  width: 22px; height: 22px; color: var(--text-muted);
+  transition: transform 0.3s; flex-shrink: 0;
+}
+.sec.open .chevron { transform: rotate(180deg); }
+
+.sec-body {
+  display: none; padding: 4px 26px 26px;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.sec.open .sec-body { display: block; }
+
+/* Progress strip inside header when section has partial score */
+.sec-head { position: relative; }
+.score-strip {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 0 2px 0 0; transition: width 0.5s ease;
+  pointer-events: none;
+}
+
+/* Question */
+.question { margin-top: 22px; }
+.q-label {
+  font-size: 1rem; font-weight: 500; color: var(--text-light);
+  margin-bottom: 12px; line-height: 1.5;
+  display: flex; align-items: baseline; gap: 9px;
+}
+.q-num {
+  font-family: 'DM Mono', monospace; font-size: 0.7rem;
+  color: var(--teal-light); flex-shrink: 0;
+}
+
+.options { display: flex; flex-direction: column; gap: 7px; }
+
+.option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; border-radius: 7px;
+  border: 1px solid transparent; cursor: pointer;
+  transition: all 0.15s;
+}
+.option:hover { background: rgba(255,255,255,0.04); border-color: rgba(201,168,76,0.15); }
+.option.selected { background: rgba(26,140,122,0.1); border-color: rgba(26,140,122,0.3); }
+.option.selected-warn { background: rgba(192,57,43,0.07); border-color: rgba(192,57,43,0.2); }
+
+.option input[type="radio"],
+.option input[type="checkbox"] {
+  appearance: none; width: 18px; height: 18px;
+  border-radius: 50%; border: 1.5px solid rgba(201,168,76,0.3);
+  flex-shrink: 0; transition: all 0.15s; cursor: pointer;
+  position: relative;
+}
+.option input[type="checkbox"] { border-radius: 4px; }
+.option input[type="radio"]:checked,
+.option input[type="checkbox"]:checked {
+  background: var(--teal); border-color: var(--teal);
+}
+.option input[type="radio"]:checked::after {
+  content:''; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:7px; height:7px; border-radius:50%; background:white;
+}
+.option input[type="checkbox"]:checked::after {
+  content:'✓'; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  font-size:11px; color:white; line-height:1;
+}
+
+.opt-text { font-size: 0.97rem; color: var(--text-muted); flex: 1; line-height: 1.45; }
+.opt-text em { font-style: normal; color: var(--teal-light); font-size: 0.85rem; }
+
+.flag {
+  font-size: 0.72rem; background: var(--red-bg); color: #e07060;
+  border: 1px solid rgba(192,57,43,0.2); padding: 3px 8px;
+  border-radius: 4px; font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em; flex-shrink: 0;
+}
+
+/* Score guide box */
+.score-guide {
+  margin-top: 20px; padding: 15px 18px;
+  background: rgba(13,27,42,0.6);
+  border-radius: 6px; border: 1px solid rgba(201,168,76,0.1);
+}
+.sg-title {
+  font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 9px;
+}
+.sg-item { font-size: 0.88rem; color: var(--text-muted); display: flex; gap: 9px; margin-top: 4px; }
+.sg-item strong { color: var(--gold-light); font-weight: 500; }
+
+/* ── SUMMARY ── */
+.summary {
+  margin-top: 40px;
+  background: linear-gradient(135deg, rgba(22,34,54,0.95), rgba(13,27,42,0.95));
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 12px; overflow: hidden;
+}
+.sum-head { padding: 26px 30px 18px; border-bottom: 1px solid rgba(201,168,76,0.1); }
+.sum-head h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem; font-weight: 700; color: var(--cream);
+}
+.sum-body { padding: 26px 30px; }
+
+/* Score table */
+.stbl { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+.stbl th {
+  font-family: 'DM Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-muted); text-align: left;
+  padding: 0 0 11px; border-bottom: 1px solid var(--border);
+}
+.stbl th:last-child { text-align: right; }
+.stbl td {
+  padding: 12px 0; font-size: 0.97rem;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  color: var(--text-light); vertical-align: middle;
+}
+.stbl td:last-child {
+  text-align: right; font-family: 'DM Mono', monospace; font-size: 0.85rem;
+}
+.bar-wrap {
+  width: 130px; height: 5px; background: rgba(255,255,255,0.06);
+  border-radius: 3px; overflow: hidden; display: inline-block;
+  vertical-align: middle; margin-right: 14px;
+}
+.bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 3px; transition: width 0.5s ease;
+}
+.stbl tr.tot td {
+  border-top: 2px solid rgba(201,168,76,0.3); border-bottom: none;
+  padding-top: 16px; font-weight: 600; font-size: 1.05rem; color: var(--cream);
+}
+
+/* Meter */
+.meter { margin-bottom: 30px; }
+.meter-lbl {
+  font-family: 'DM Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 10px;
+  display: flex; justify-content: space-between;
+}
+.meter-track {
+  height: 12px; background: rgba(255,255,255,0.06);
+  border-radius: 6px; overflow: hidden; margin-bottom: 8px;
+}
+.meter-fill {
+  height: 100%; border-radius: 6px;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transition: width 0.7s cubic-bezier(.4,0,.2,1);
+}
+.meter-ticks { display: flex; justify-content: space-between; padding: 0 2px; }
+.tick { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: rgba(143,163,176,0.45); }
+
+/* Readiness badge */
+.r-badge {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border-radius: 8px;
+  border: 1px solid var(--border); background: rgba(201,168,76,0.05);
+  margin-bottom: 22px; transition: all 0.4s;
+}
+.r-badge .r-icon { font-size: 1.8rem; flex-shrink: 0; }
+.r-badge .r-level {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--gold);
+}
+.r-badge .r-desc { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-top: 2px; }
+
+/* Level cards */
+.lvl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 30px; }
+.lvl-card {
+  padding: 14px 16px; border-radius: 7px;
+  border: 1px solid rgba(201,168,76,0.08);
+  transition: all 0.3s;
+}
+.lvl-card.active { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+.lvl-range { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); margin-bottom: 3px; }
+.lvl-name { font-weight: 600; font-size: 0.95rem; color: var(--cream); margin-bottom: 5px; }
+.lvl-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.5; }
+
+/* Action items */
+.act-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 600; color: var(--cream);
+  margin-bottom: 7px; display: flex; align-items: center; gap: 10px;
+}
+.act-head::after { content:''; flex:1; height:1px; background:var(--border); }
+.act-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px; }
+
+.act-row { display: flex; align-items: center; gap: 11px; margin-bottom: 9px; }
+.act-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gold); flex-shrink: 0;
+}
+.act-row input {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px; padding: 10px 13px;
+  color: var(--cream); font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+}
+.act-row input:focus { border-color: rgba(201,168,76,0.4); }
+.act-row input::placeholder { color: rgba(232,224,212,0.2); }
+
+.notes-lbl {
+  font-family: 'DM Mono', monospace; font-size: 0.63rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-muted); display: block; margin: 22px 0 8px;
+}
+textarea {
+  width: 100%; min-height: 96px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px; padding: 13px 15px;
+  color: var(--cream); font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem; resize: vertical; outline: none;
+  transition: border-color 0.2s; line-height: 1.6;
+}
+textarea:focus { border-color: rgba(201,168,76,0.4); }
+textarea::placeholder { color: rgba(232,224,212,0.18); }
+
+.rev-row { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+.rev-row label {
+  font-family: 'DM Mono', monospace; font-size: 0.63rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted);
+}
+.rev-row input[type="date"] {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px; padding: 9px 13px;
+  color: var(--cream); font-family: 'DM Mono', monospace;
+  font-size: 0.82rem; outline: none; color-scheme: dark;
+  transition: border-color 0.2s;
+}
+.rev-row input[type="date"]:focus { border-color: rgba(201,168,76,0.4); }
+
+/* Footer */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 24px 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.foot-brand { display: flex; align-items: center; gap: 10px; }
+.foot-copy { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em; }
+.foot-disc { font-size: 0.75rem; color: rgba(143,163,176,0.45); max-width: 400px; text-align: right; line-height: 1.5; }
+
+@media (max-width: 600px) {
+  .client-grid { grid-template-columns: 1fr; }
+  .lvl-grid { grid-template-columns: 1fr; }
+  .score-pill { display: none; }
+  .foot-disc { display: none; }
+}
+
+@media print {
+  body { background: white; color: #1a1a1a; font-size: 15px; }
+  body::before { display: none; }
+  header { position: static; background: white; border-bottom: 2px solid #c9a84c; }
+  .btn-print { display: none; }
+  .sec { break-inside: avoid; border: 1px solid #ddd; }
+  .sec-body { display: block !important; }
+  .chevron { display: none; }
+  .summary { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo-lockup">
+    <div class="pf-logo">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="21" stroke="#c9a84c" stroke-width="1"/>
+        <polygon points="22,4 40,22 22,40 4,22" fill="none" stroke="rgba(201,168,76,0.18)" stroke-width="0.8"/>
+        <path d="M10 30V14h9c3.3 0 5.5 2 5.5 5s-2.2 5-5.5 5H14" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M26 30V14h8M26 22h6M26 14h8" stroke="#22b5a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="brand-name">
+      <span class="primary">Petty-Ferguson Consulting</span>
+      <span class="secondary">Digital Asset Advisory</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="score-pill">Total Score: <span class="sv" id="hdrScore">0</span> / 100</div>
+    <button class="btn-print" onclick="window.print()">⬡ Print</button>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-tag">For Advisor Use with Clients</div>
+  <h1>Client Crypto<br><em>Readiness Assessment</em></h1>
+  <p>Identify gaps in your client's cryptocurrency knowledge, security practices, and financial planning. Answer each question to generate a live readiness score.</p>
+  <div class="client-grid">
+    <div class="info-field"><label>Client Name</label><input type="text" placeholder="Full name"></div>
+    <div class="info-field"><label>Date</label><input type="date"></div>
+    <div class="info-field"><label>Advisor</label><input type="text" placeholder="Advisor name"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<main>
+
+<!-- ─ SECTION 1 ─ -->
+<div class="sec open" id="sec1">
+  <div class="sec-head" onclick="toggle('sec1')">
+    <div class="sec-head-left">
+      <div class="sec-num">01</div>
+      <div>
+        <div class="sec-title">Current Crypto Holdings</div>
+        <div class="sec-sub">Holdings &amp; Allocation · Max 10 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b1">0</span> / 10</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip1" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">1.1</span> Does the client currently hold any cryptocurrency?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q11" data-pts="0"> <span class="opt-text">Yes</span></label>
+        <label class="option"><input type="radio" name="q11" data-pts="0"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q11" data-pts="0"> <span class="opt-text">Unsure</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">1.2</span> If yes, which assets? <em>(check all that apply)</em></div>
+      <div class="options">
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">Bitcoin (BTC)</span></label>
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">Ethereum (ETH)</span></label>
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">Stablecoins (USDC, USDT, etc.)</span></label>
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">Other altcoins</span></label>
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">NFTs</span></label>
+        <label class="option"><input type="checkbox" name="q12" data-pts="0"> <span class="opt-text">Unknown / Can't specify</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">1.3</span> Approximate total crypto allocation as % of portfolio:</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q13" data-pts="5" data-sec="1"> <span class="opt-text">Less than 1%</span></label>
+        <label class="option"><input type="radio" name="q13" data-pts="10" data-sec="1"> <span class="opt-text">1–5% <em>(recommended range)</em></span></label>
+        <label class="option"><input type="radio" name="q13" data-pts="5" data-sec="1"> <span class="opt-text">5–10%</span></label>
+        <label class="option"><input type="radio" name="q13" data-pts="0" data-sec="1" data-warn="1"> <span class="opt-text">10–25%</span><span class="flag">⚠ overweight</span></label>
+        <label class="option"><input type="radio" name="q13" data-pts="0" data-sec="1" data-warn="1"> <span class="opt-text">More than 25%</span><span class="flag">⚠ overweight</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>+10</strong> Allocation of 1–5%</div>
+      <div class="sg-item"><strong>+5</strong> Under 1% or 5–10%</div>
+      <div class="sg-item"><strong>+0</strong> Overallocation above 10%</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SECTION 2 ─ -->
+<div class="sec" id="sec2">
+  <div class="sec-head" onclick="toggle('sec2')">
+    <div class="sec-head-left">
+      <div class="sec-num">02</div>
+      <div>
+        <div class="sec-title">Custody &amp; Control</div>
+        <div class="sec-sub">Wallet &amp; Exchange Practices · Max 20 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b2">0</span> / 20</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip2" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">2.1</span> Where does the client hold their crypto?</div>
+      <div class="options">
+        <label class="option"><input type="checkbox" name="q21" data-pts="0"> <span class="opt-text">Major exchange (Coinbase, Kraken, Fidelity, etc.)</span></label>
+        <label class="option"><input type="checkbox" name="q21" data-pts="0" data-warn="1"> <span class="opt-text">Smaller / newer exchange</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="checkbox" name="q21" data-pts="0"> <span class="opt-text">Hardware wallet (Ledger, Trezor, etc.)</span></label>
+        <label class="option"><input type="checkbox" name="q21" data-pts="0"> <span class="opt-text">Mobile wallet (self-custody)</span></label>
+        <label class="option"><input type="checkbox" name="q21" data-pts="0"> <span class="opt-text">Multiple locations</span></label>
+        <label class="option"><input type="checkbox" name="q21" data-pts="0" data-warn="1"> <span class="opt-text">Don't know</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">2.2</span> Does the client understand the difference between custodial and non-custodial solutions?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q22" data-pts="7" data-sec="2"> <span class="opt-text">Yes, can explain it</span></label>
+        <label class="option"><input type="radio" name="q22" data-pts="4" data-sec="2"> <span class="opt-text">Somewhat</span></label>
+        <label class="option"><input type="radio" name="q22" data-pts="0" data-sec="2" data-warn="1"> <span class="opt-text">No</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">2.3</span> Has the client ever successfully withdrawn crypto from an exchange?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q23" data-pts="7" data-sec="2"> <span class="opt-text">Yes</span></label>
+        <label class="option"><input type="radio" name="q23" data-pts="2" data-sec="2"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q23" data-pts="2" data-sec="2"> <span class="opt-text">Never tried</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">2.4</span> For hardware / self-custody: Does the client have their recovery phrase stored securely?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q24" data-pts="6" data-sec="2"> <span class="opt-text">Yes, in a secure offline location</span></label>
+        <label class="option"><input type="radio" name="q24" data-pts="2" data-sec="2" data-warn="1"> <span class="opt-text">Yes, but location is questionable (phone notes, email, etc.)</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q24" data-pts="0" data-sec="2" data-warn="1"> <span class="opt-text">No / Lost it</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q24" data-pts="4" data-sec="2"> <span class="opt-text">N/A — custodial only</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>Q2.2</strong> Understands custody fully (+7), somewhat (+4), no (0)</div>
+      <div class="sg-item"><strong>Q2.3</strong> Has withdrawn (+7), not yet (+2)</div>
+      <div class="sg-item"><strong>Q2.4</strong> Secure offline (+6), questionable (+2), lost (0), custodial (+4)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SECTION 3 ─ -->
+<div class="sec" id="sec3">
+  <div class="sec-head" onclick="toggle('sec3')">
+    <div class="sec-head-left">
+      <div class="sec-num">03</div>
+      <div>
+        <div class="sec-title">Security Practices</div>
+        <div class="sec-sub">MFA, Passwords &amp; Account Hygiene · Max 20 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b3">0</span> / 20</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip3" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">3.1</span> Does the client use multi-factor authentication (MFA) on crypto accounts?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q31" data-pts="6" data-sec="3"> <span class="opt-text">Yes — hardware key or authenticator app</span></label>
+        <label class="option"><input type="radio" name="q31" data-pts="3" data-sec="3" data-warn="1"> <span class="opt-text">Yes — SMS-based</span><span class="flag">⚠ SIM swap risk</span></label>
+        <label class="option"><input type="radio" name="q31" data-pts="0" data-sec="3" data-warn="1"> <span class="opt-text">No</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q31" data-pts="1" data-sec="3"> <span class="opt-text">Don't know</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">3.2</span> Has the client's email ever been compromised?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q32" data-pts="5" data-sec="3"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q32" data-pts="3" data-sec="3"> <span class="opt-text">Yes, but changed passwords since</span></label>
+        <label class="option"><input type="radio" name="q32" data-pts="0" data-sec="3" data-warn="1"> <span class="opt-text">Yes, still using same credentials</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q32" data-pts="1" data-sec="3"> <span class="opt-text">Don't know</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">3.3</span> Does the client use unique passwords for crypto accounts?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q33" data-pts="5" data-sec="3"> <span class="opt-text">Yes, with password manager</span></label>
+        <label class="option"><input type="radio" name="q33" data-pts="3" data-sec="3"> <span class="opt-text">Yes, manually managed</span></label>
+        <label class="option"><input type="radio" name="q33" data-pts="0" data-sec="3" data-warn="1"> <span class="opt-text">No — reuses passwords</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q33" data-pts="1" data-sec="3"> <span class="opt-text">Don't know</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">3.4</span> Has the client reviewed their security setup in the past 12 months?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q34" data-pts="4" data-sec="3"> <span class="opt-text">Yes</span></label>
+        <label class="option"><input type="radio" name="q34" data-pts="1" data-sec="3"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q34" data-pts="0" data-sec="3" data-warn="1"> <span class="opt-text">Never set one up properly</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>Q3.1</strong> Auth app (+6), SMS (+3), none (0), unknown (+1)</div>
+      <div class="sg-item"><strong>Q3.2</strong> Never compromised (+5), changed since (+3), same creds (0), unknown (+1)</div>
+      <div class="sg-item"><strong>Q3.3</strong> Password manager (+5), manual (+3), reuses (0), unknown (+1)</div>
+      <div class="sg-item"><strong>Q3.4</strong> Reviewed recently (+4), not reviewed (+1), never set up (0)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SECTION 4 ─ -->
+<div class="sec" id="sec4">
+  <div class="sec-head" onclick="toggle('sec4')">
+    <div class="sec-head-left">
+      <div class="sec-num">04</div>
+      <div>
+        <div class="sec-title">Volatility &amp; Risk Understanding</div>
+        <div class="sec-sub">Behavior &amp; Investment Mindset · Max 20 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b4">0</span> / 20</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip4" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">4.1</span> Does the client understand that 5–20% daily swings are normal for crypto?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q41" data-pts="6" data-sec="4"> <span class="opt-text">Yes, comfortable with it</span></label>
+        <label class="option"><input type="radio" name="q41" data-pts="3" data-sec="4"> <span class="opt-text">Somewhat, still adjusting</span></label>
+        <label class="option"><input type="radio" name="q41" data-pts="0" data-sec="4" data-warn="1"> <span class="opt-text">No — expects stock-like stability</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">4.2</span> What is the client's investment horizon for crypto holdings?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q42" data-pts="6" data-sec="4"> <span class="opt-text">Long-term (5+ years)</span></label>
+        <label class="option"><input type="radio" name="q42" data-pts="4" data-sec="4"> <span class="opt-text">Medium-term (1–5 years)</span></label>
+        <label class="option"><input type="radio" name="q42" data-pts="2" data-sec="4"> <span class="opt-text">Short-term (&lt; 1 year)</span></label>
+        <label class="option"><input type="radio" name="q42" data-pts="0" data-sec="4" data-warn="1"> <span class="opt-text">Day trading</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">4.3</span> Has the client ever panic sold during a dip?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q43" data-pts="4" data-sec="4"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q43" data-pts="2" data-sec="4"> <span class="opt-text">Yes, once</span></label>
+        <label class="option"><input type="radio" name="q43" data-pts="0" data-sec="4" data-warn="1"> <span class="opt-text">Yes, multiple times</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q43" data-pts="4" data-sec="4"> <span class="opt-text">N/A — new to crypto</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">4.4</span> Has the client ever bought based on celebrity / influencer endorsement or FOMO?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q44" data-pts="4" data-sec="4"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q44" data-pts="2" data-sec="4"> <span class="opt-text">Yes, but learned from it</span></label>
+        <label class="option"><input type="radio" name="q44" data-pts="0" data-sec="4" data-warn="1"> <span class="opt-text">Yes, still does</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>Q4.1</strong> Comfortable (+6), adjusting (+3), unrealistic expectations (0)</div>
+      <div class="sg-item"><strong>Q4.2</strong> Long-term (+6), medium (+4), short (+2), day trading (0)</div>
+      <div class="sg-item"><strong>Q4.3</strong> Never panic sold (+4), once (+2), multiple times (0)</div>
+      <div class="sg-item"><strong>Q4.4</strong> Never bought on hype (+4), learned from it (+2), still does (0)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SECTION 5 ─ -->
+<div class="sec" id="sec5">
+  <div class="sec-head" onclick="toggle('sec5')">
+    <div class="sec-head-left">
+      <div class="sec-num">05</div>
+      <div>
+        <div class="sec-title">Documentation &amp; Estate Planning</div>
+        <div class="sec-sub">Records, Inheritance &amp; Access · Max 15 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b5">0</span> / 15</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip5" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">5.1</span> Does the client have a record of their crypto accounts and wallets?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q51" data-pts="5" data-sec="5"> <span class="opt-text">Yes — documented and organized</span></label>
+        <label class="option"><input type="radio" name="q51" data-pts="3" data-sec="5"> <span class="opt-text">Partial records</span></label>
+        <label class="option"><input type="radio" name="q51" data-pts="0" data-sec="5" data-warn="1"> <span class="opt-text">No documentation</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">5.2</span> Would a beneficiary be able to access the crypto if something happened to the client?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q52" data-pts="5" data-sec="5"> <span class="opt-text">Yes — clear inheritance plan in place</span></label>
+        <label class="option"><input type="radio" name="q52" data-pts="3" data-sec="5"> <span class="opt-text">Partially — some info shared but incomplete</span></label>
+        <label class="option"><input type="radio" name="q52" data-pts="0" data-sec="5" data-warn="1"> <span class="opt-text">No — assets would be lost</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">5.3</span> Is crypto mentioned in the client's estate plan?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q53" data-pts="5" data-sec="5"> <span class="opt-text">Yes, with specific instructions</span></label>
+        <label class="option"><input type="radio" name="q53" data-pts="2" data-sec="5"> <span class="opt-text">Estate plan exists but doesn't address crypto</span></label>
+        <label class="option"><input type="radio" name="q53" data-pts="0" data-sec="5" data-warn="1"> <span class="opt-text">No estate plan</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>Q5.1</strong> Fully documented (+5), partial (+3), none (0)</div>
+      <div class="sg-item"><strong>Q5.2</strong> Clear plan (+5), partial (+3), no plan (0)</div>
+      <div class="sg-item"><strong>Q5.3</strong> Crypto in estate plan (+5), plan exists but silent (+2), no plan (0)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SECTION 6 ─ -->
+<div class="sec" id="sec6">
+  <div class="sec-head" onclick="toggle('sec6')">
+    <div class="sec-head-left">
+      <div class="sec-num">06</div>
+      <div>
+        <div class="sec-title">Scam Exposure</div>
+        <div class="sec-sub">Phishing, FOMO Tactics &amp; Verification · Max 15 pts</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+      <div class="sec-badge"><span class="bv" id="b6">0</span> / 15</div>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </div>
+    <div class="score-strip" id="strip6" style="width:0%"></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">6.1</span> Has anyone approached the client with a "guaranteed returns" crypto opportunity?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q61" data-pts="5" data-sec="6"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q61" data-pts="4" data-sec="6"> <span class="opt-text">Yes, and they declined</span></label>
+        <label class="option"><input type="radio" name="q61" data-pts="1" data-sec="6" data-warn="1"> <span class="opt-text">Yes, and they're considering it</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q61" data-pts="0" data-sec="6" data-warn="1"> <span class="opt-text">Yes, and they invested</span><span class="flag">⚠⚠ critical</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">6.2</span> Has the client received unsolicited messages about crypto on social media or messaging apps?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q62" data-pts="5" data-sec="6"> <span class="opt-text">No</span></label>
+        <label class="option"><input type="radio" name="q62" data-pts="4" data-sec="6"> <span class="opt-text">Yes, ignored them</span></label>
+        <label class="option"><input type="radio" name="q62" data-pts="0" data-sec="6" data-warn="1"> <span class="opt-text">Yes, engaged with them</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">6.3</span> Does the client verify URLs and sender addresses before clicking links or sending crypto?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="q63" data-pts="5" data-sec="6"> <span class="opt-text">Always</span></label>
+        <label class="option"><input type="radio" name="q63" data-pts="3" data-sec="6"> <span class="opt-text">Sometimes</span></label>
+        <label class="option"><input type="radio" name="q63" data-pts="0" data-sec="6" data-warn="1"> <span class="opt-text">Rarely</span><span class="flag">⚠ flag</span></label>
+        <label class="option"><input type="radio" name="q63" data-pts="0" data-sec="6" data-warn="1"> <span class="opt-text">Don't know how</span><span class="flag">⚠ flag</span></label>
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <div class="sg-title">Scoring Logic</div>
+      <div class="sg-item"><strong>Q6.1</strong> Not approached (+5), declined (+4), considering (1), invested (0)</div>
+      <div class="sg-item"><strong>Q6.2</strong> No messages (+5), ignored (+4), engaged (0)</div>
+      <div class="sg-item"><strong>Q6.3</strong> Always verifies (+5), sometimes (+3), rarely or doesn't know (0)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─ SCORING SUMMARY ─ -->
+<div class="summary" id="summaryBlock">
+  <div class="sum-head"><h2>Scoring Summary</h2></div>
+  <div class="sum-body">
+
+    <table class="stbl">
+      <thead>
+        <tr>
+          <th>Section</th>
+          <th></th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1. Holdings &amp; Allocation</td><td><div class="bar-wrap"><div class="bar-fill" id="bar1" style="width:0%"></div></div></td><td id="td1">0 / 10</td></tr>
+        <tr><td>2. Custody &amp; Control</td><td><div class="bar-wrap"><div class="bar-fill" id="bar2" style="width:0%"></div></div></td><td id="td2">0 / 20</td></tr>
+        <tr><td>3. Security Practices</td><td><div class="bar-wrap"><div class="bar-fill" id="bar3" style="width:0%"></div></div></td><td id="td3">0 / 20</td></tr>
+        <tr><td>4. Volatility &amp; Risk</td><td><div class="bar-wrap"><div class="bar-fill" id="bar4" style="width:0%"></div></div></td><td id="td4">0 / 20</td></tr>
+        <tr><td>5. Documentation &amp; Estate</td><td><div class="bar-wrap"><div class="bar-fill" id="bar5" style="width:0%"></div></div></td><td id="td5">0 / 15</td></tr>
+        <tr><td>6. Scam Exposure</td><td><div class="bar-wrap"><div class="bar-fill" id="bar6" style="width:0%"></div></div></td><td id="td6">0 / 15</td></tr>
+        <tr class="tot"><td>Total</td><td></td><td id="tdTot">0 / 100</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Meter -->
+    <div class="meter">
+      <div class="meter-lbl"><span>Readiness Level</span><span id="mPct">0 / 100</span></div>
+      <div class="meter-track"><div class="meter-fill" id="mFill" style="width:0%"></div></div>
+      <div class="meter-ticks">
+        <span class="tick">0</span><span class="tick">25</span>
+        <span class="tick">50</span><span class="tick">75</span><span class="tick">100</span>
+      </div>
+    </div>
+
+    <!-- Badge -->
+    <div class="r-badge" id="rBadge">
+      <div class="r-icon" id="rIcon">—</div>
+      <div>
+        <div class="r-level" id="rLevel">Awaiting Responses</div>
+        <div class="r-desc" id="rDesc">Complete the assessment above to generate the client's readiness score.</div>
+      </div>
+    </div>
+
+    <!-- Level cards -->
+    <div class="lvl-grid">
+      <div class="lvl-card" id="lc1"><div class="lvl-range">85 – 100</div><div class="lvl-name">✓ Ready</div><div class="lvl-desc">Strong foundations. Focus on optimization and ongoing education.</div></div>
+      <div class="lvl-card" id="lc2"><div class="lvl-range">65 – 84</div><div class="lvl-name">◎ Developing</div><div class="lvl-desc">Core understanding present but gaps exist. Prioritize identified weaknesses.</div></div>
+      <div class="lvl-card" id="lc3"><div class="lvl-range">40 – 64</div><div class="lvl-name">△ Needs Work</div><div class="lvl-desc">Significant gaps in multiple areas. Recommend pausing new investments until addressed.</div></div>
+      <div class="lvl-card" id="lc4"><div class="lvl-range">0 – 39</div><div class="lvl-name">⚠ At Risk</div><div class="lvl-desc">Major vulnerabilities present. Immediate intervention needed.</div></div>
+    </div>
+
+    <!-- Action items -->
+    <div style="margin-top:10px">
+      <div class="act-head">Priority Action Items</div>
+      <div class="act-sub">Based on this assessment, the top 3 priorities for this client are:</div>
+      <div class="act-row"><div class="act-n">1</div><input type="text" placeholder="Priority action item..."></div>
+      <div class="act-row"><div class="act-n">2</div><input type="text" placeholder="Priority action item..."></div>
+      <div class="act-row"><div class="act-n">3</div><input type="text" placeholder="Priority action item..."></div>
+    </div>
+
+    <label class="notes-lbl">Advisor Notes</label>
+    <textarea placeholder="Additional observations or context..."></textarea>
+
+    <div class="rev-row">
+      <label>Next Review Date</label>
+      <input type="date">
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-brand">
+    <div class="pf-logo" style="width:30px;height:30px">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="21" stroke="#c9a84c" stroke-width="1"/>
+        <path d="M10 30V14h9c3.3 0 5.5 2 5.5 5s-2.2 5-5.5 5H14" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M26 30V14h8M26 22h6M26 14h8" stroke="#22b5a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <span class="foot-copy">© 2026 Petty-Ferguson Consulting</span>
+  </div>
+  <div class="foot-disc">For advisor use only. Not financial, legal, or investment advice. Consult qualified professionals.</div>
+</footer>
+
+<script>
+// ── Section toggle ──
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── Scoring engine ──
+// Map each section to the radio groups that contribute points
+const SEC_QUESTIONS = {
+  1: ['q13'],
+  2: ['q22','q23','q24'],
+  3: ['q31','q32','q33','q34'],
+  4: ['q41','q42','q43','q44'],
+  5: ['q51','q52','q53'],
+  6: ['q61','q62','q63']
+};
+const SEC_MAX = { 1:10, 2:20, 3:20, 4:20, 5:15, 6:15 };
+
+function getSectionScore(sec) {
+  let total = 0;
+  (SEC_QUESTIONS[sec] || []).forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    if (checked) total += parseInt(checked.dataset.pts || 0);
+  });
+  // Cap at max
+  return Math.min(total, SEC_MAX[sec]);
+}
+
+function refreshAll() {
+  let grand = 0;
+  for (let s = 1; s <= 6; s++) {
+    const sc = getSectionScore(s);
+    const mx = SEC_MAX[s];
+    grand += sc;
+
+    // Section badge
+    document.getElementById('b' + s).textContent = sc;
+
+    // Progress strip on header
+    const strip = document.getElementById('strip' + s);
+    if (strip) strip.style.width = (sc / mx * 100) + '%';
+
+    // Summary table
+    document.getElementById('td' + s).textContent = sc + ' / ' + mx;
+    document.getElementById('bar' + s).style.width = (sc / mx * 100) + '%';
+  }
+
+  // Grand total
+  document.getElementById('tdTot').textContent = grand + ' / 100';
+  document.getElementById('hdrScore').textContent = grand;
+  document.getElementById('mPct').textContent = grand + ' / 100';
+  document.getElementById('mFill').style.width = grand + '%';
+
+  // Readiness badge + level cards
+  let icon, level, desc, activeLC;
+  if (grand >= 85)      { icon='✓'; level='Ready';      desc='Client has strong foundations. Focus on optimization and ongoing education.';             activeLC='lc1'; }
+  else if (grand >= 65) { icon='◎'; level='Developing';  desc='Core understanding present but gaps exist. Prioritize the identified weaknesses.';       activeLC='lc2'; }
+  else if (grand >= 40) { icon='△'; level='Needs Work';  desc='Significant gaps in multiple areas. Recommend pausing new investments until addressed.'; activeLC='lc3'; }
+  else                  { icon='⚠'; level='At Risk';     desc='Major vulnerabilities present. Immediate advisor intervention is needed.';               activeLC='lc4'; }
+
+  document.getElementById('rIcon').textContent  = icon;
+  document.getElementById('rLevel').textContent = level;
+  document.getElementById('rDesc').textContent  = desc;
+
+  ['lc1','lc2','lc3','lc4'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(activeLC).classList.add('active');
+}
+
+// ── Option highlight on select ──
+document.querySelectorAll('.option input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    // Clear siblings
+    const siblings = document.querySelectorAll(`input[name="${this.name}"]`);
+    siblings.forEach(r => {
+      const opt = r.closest('.option');
+      opt.classList.remove('selected','selected-warn');
+    });
+    // Highlight selected
+    const opt = this.closest('.option');
+    if (this.dataset.warn) opt.classList.add('selected-warn');
+    else opt.classList.add('selected');
+    refreshAll();
+  });
+});
+
+document.querySelectorAll('.option input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', function() {
+    const opt = this.closest('.option');
+    if (this.checked) {
+      if (this.dataset.warn) opt.classList.add('selected-warn');
+      else opt.classList.add('selected');
+    } else {
+      opt.classList.remove('selected','selected-warn');
+    }
+    refreshAll();
+  });
+});
+
+// Initial render
+refreshAll();
+</script>
+</body>
+</html>
