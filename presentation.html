@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Assets: A Practical Guide for Financial Advisors</title>
+  <meta name="description" content="Interactive presentation for Northwestern Mutual advisors — April 2026." />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a1220;
+      color: #faf8f3;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --navy:    #0d1b35;
+      --navy-2:  #0a1220;
+      --navy-3:  #142847;
+      --teal:    #1a9a9a;
+      --teal-lt: #4ec4c4;
+      --gold:    #e3bf5c;
+      --gold-dk: #c9a84c;
+      --cream:   #faf8f3;
+      --cream-2: rgba(250,248,243,0.72);
+      --cream-3: rgba(250,248,243,0.45);
+      --red:     #ef4444;
+      --amber:   #f59e0b;
+      --green:   #10b981;
+      --border:  rgba(250,248,243,0.12);
+      --border-2:rgba(250,248,243,0.22);
+      --radius:  10px;
+    }
+
+    /* ── Deck frame ── */
+    #deck {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(ellipse at top, #142847 0%, #0a1220 60%, #070d19 100%);
+    }
+
+    /* ── Slide base ── */
+    .slide {
+      position: absolute; inset: 0;
+      padding: clamp(36px, 5vw, 80px) clamp(48px, 8vw, 140px);
+      display: flex; flex-direction: column; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transform: translateX(40px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      overflow: hidden;
+    }
+    .slide.active {
+      opacity: 1; pointer-events: auto;
+      transform: translateX(0);
+    }
+    .slide.prev { transform: translateX(-40px); }
+
+    /* ── Typography ── */
+    .eyebrow {
+      font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: clamp(12px, 1.6vw, 22px);
+    }
+    h1.slide-title {
+      font-size: clamp(2.4rem, 5.2vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: var(--cream);
+      margin-bottom: clamp(14px, 1.8vw, 26px);
+    }
+    h1.slide-title .gold { color: var(--gold); }
+    h1.slide-title .teal { color: var(--teal-lt); }
+    h2.slide-title {
+      font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: clamp(18px, 2.2vw, 34px);
+    }
+    h2.slide-title .gold { color: var(--gold); }
+    .lede {
+      font-size: clamp(1.1rem, 1.7vw, 1.65rem);
+      color: var(--cream-2);
+      max-width: 72ch;
+      margin-bottom: clamp(22px, 2.8vw, 40px);
+    }
+
+    /* ── Title slide ── */
+    .title-slide {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(227,191,92,0.08), transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(26,154,154,0.10), transparent 45%);
+    }
+    .title-slide .brand {
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream-3);
+      margin-bottom: clamp(26px, 3vw, 44px);
+    }
+    .title-slide .brand span { color: var(--gold); }
+    .title-slide h1 {
+      font-size: clamp(2.8rem, 6.8vw, 6.4rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: clamp(18px, 2vw, 30px);
+    }
+    .title-slide h1 .divider {
+      display: block;
+      width: clamp(60px, 8vw, 120px);
+      height: 5px;
+      background: var(--gold);
+      margin: clamp(20px, 2.6vw, 38px) 0;
+      border-radius: 4px;
+    }
+    .title-slide .sub {
+      font-size: clamp(1.15rem, 1.8vw, 1.8rem);
+      color: var(--cream-2);
+      max-width: 60ch;
+      margin-bottom: clamp(30px, 4vw, 60px);
+    }
+    .presenters {
+      display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 60px);
+      margin-top: clamp(14px, 2vw, 28px);
+    }
+    .presenter {
+      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+    }
+    .presenter .name {
+      color: var(--cream);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .presenter .role {
+      color: var(--cream-3);
+      font-size: clamp(0.8rem, 1vw, 1rem);
+    }
+    .title-qr {
+      position: absolute;
+      right: clamp(48px, 7vw, 120px);
+      bottom: clamp(40px, 5vw, 80px);
+      text-align: center;
+    }
+    .title-qr .qr-box {
+      background: rgba(250,248,243,0.06);
+      border: 1px solid var(--border-2);
+      padding: clamp(14px, 1.6vw, 22px);
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+    }
+    .title-qr svg {
+      width: clamp(140px, 15vw, 220px);
+      height: clamp(140px, 15vw, 220px);
+      display: block;
+    }
+    .title-qr .qr-label {
+      margin-top: 10px;
+      font-size: clamp(0.75rem, 0.95vw, 1rem);
+      color: var(--cream-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .title-qr .qr-url {
+      margin-top: 2px;
+      font-size: clamp(0.85rem, 1.05vw, 1.1rem);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* ── Stat grids ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(18px, 2.4vw, 36px);
+      margin-top: clamp(14px, 2vw, 28px);
+    }
+    .stat {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: clamp(22px, 2.6vw, 36px) clamp(20px, 2.4vw, 32px);
+    }
+    .stat .num {
+      font-size: clamp(2.6rem, 5.2vw, 5rem);
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: clamp(8px, 1vw, 14px);
+    }
+    .stat .label {
+      font-size: clamp(0.95rem, 1.25vw, 1.25rem);
+      color: var(--cream);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: clamp(8px, 1vw, 14px);
+    }
+    .stat .src {
+      font-size: clamp(0.72rem, 0.9vw, 0.9rem);
+      color: var(--cream-3);
+    }
+    .stat.red    { border-left-color: var(--red);   }
+    .stat.red    .num { color: var(--red); }
+    .stat.teal   { border-left-color: var(--teal-lt);}
+    .stat.teal   .num { color: var(--teal-lt); }
+
+    /* ── Three-col roles ── */
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(18px, 2.4vw, 32px);
+      margin-top: clamp(14px, 2vw, 24px);
+    }
+    .role-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(24px, 2.8vw, 40px);
+    }
+    .role-card .ic {
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      margin-bottom: clamp(10px, 1.4vw, 18px);
+    }
+    .role-card h3 {
+      font-size: clamp(1.1rem, 1.6vw, 1.55rem);
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: clamp(8px, 1vw, 14px);
+    }
+    .role-card p {
+      font-size: clamp(0.92rem, 1.2vw, 1.2rem);
+      color: var(--cream-2);
+      line-height: 1.45;
+    }
+    .role-card.working   { border-top: 4px solid var(--green); }
+    .role-card.concerning{ border-top: 4px solid var(--amber); }
+    .role-card.role      { border-top: 4px solid var(--teal-lt); }
+
+    /* ── Timeline ── */
+    .timeline-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(10px, 1.2vw, 16px);
+      margin-top: clamp(10px, 1.5vw, 20px);
+      max-height: 72vh; overflow: hidden;
+    }
+    .tl-row {
+      display: grid;
+      grid-template-columns: clamp(110px, 11vw, 180px) 1fr;
+      gap: clamp(20px, 2.4vw, 36px);
+      align-items: baseline;
+      padding: clamp(10px, 1.2vw, 18px) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-row:last-child { border-bottom: none; }
+    .tl-year {
+      font-size: clamp(1.05rem, 1.6vw, 1.6rem);
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+    .tl-text {
+      font-size: clamp(0.95rem, 1.25vw, 1.3rem);
+      color: var(--cream);
+    }
+
+    /* ── Reg snapshot ── */
+    .reg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(14px, 1.8vw, 24px);
+      margin-top: clamp(8px, 1vw, 14px);
+    }
+    .reg-item {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(16px, 1.8vw, 26px);
+    }
+    .reg-tag {
+      display: inline-block;
+      font-size: clamp(0.65rem, 0.85vw, 0.82rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: clamp(6px, 0.8vw, 10px);
+    }
+    .reg-tag.law      { background: rgba(16,185,129,0.18); color: #6ee7b7; }
+    .reg-tag.pending  { background: rgba(245,158,11,0.18); color: #fcd34d; }
+    .reg-tag.eo       { background: rgba(59,130,246,0.18); color: #93c5fd; }
+    .reg-tag.agency   { background: rgba(168,85,247,0.18); color: #d8b4fe; }
+    .reg-item h4 {
+      font-size: clamp(0.98rem, 1.3vw, 1.3rem);
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .reg-item p {
+      font-size: clamp(0.85rem, 1.05vw, 1.08rem);
+      color: var(--cream-2);
+      line-height: 1.4;
+    }
+
+    /* ── Framework box ── */
+    .framework {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(16px, 2vw, 28px);
+      margin-top: clamp(14px, 2vw, 28px);
+    }
+    .fw-item {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--teal-lt);
+      border-radius: var(--radius);
+      padding: clamp(22px, 2.6vw, 34px);
+    }
+    .fw-item .k {
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .fw-item .v {
+      font-size: clamp(1.2rem, 1.8vw, 1.85rem);
+      color: var(--cream);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* ── ETF table ── */
+    .etf-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: clamp(10px, 1.4vw, 18px);
+      font-size: clamp(0.9rem, 1.15vw, 1.2rem);
+    }
+    .etf-table th {
+      background: rgba(250,248,243,0.06);
+      color: var(--gold);
+      text-align: left;
+      padding: clamp(10px, 1.2vw, 16px) clamp(12px, 1.4vw, 18px);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: clamp(0.72rem, 0.9vw, 0.9rem);
+      font-weight: 700;
+    }
+    .etf-table td {
+      padding: clamp(10px, 1.2vw, 16px) clamp(12px, 1.4vw, 18px);
+      border-bottom: 1px solid var(--border);
+      color: var(--cream);
+    }
+    .etf-table tr:last-child td { border-bottom: none; }
+    .ticker {
+      font-family: 'SF Mono', 'Courier New', monospace;
+      color: var(--teal-lt);
+      font-weight: 700;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: clamp(0.72rem, 0.9vw, 0.9rem);
+      font-weight: 600;
+    }
+    .badge.green  { background: rgba(16,185,129,0.18); color: #6ee7b7; }
+    .badge.amber  { background: rgba(245,158,11,0.18); color: #fcd34d; }
+    .badge.red    { background: rgba(239,68,68,0.18);  color: #fca5a5; }
+
+    /* ── Altcoin columns ── */
+    .alt-cols {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(14px, 1.8vw, 26px);
+      margin-top: clamp(14px, 2vw, 24px);
+    }
+    .alt-col {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(18px, 2.2vw, 28px);
+    }
+    .alt-col h4 {
+      font-size: clamp(1rem, 1.4vw, 1.4rem);
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: clamp(6px, 0.8vw, 12px);
+      padding-bottom: clamp(6px, 0.8vw, 10px);
+      border-bottom: 2px solid var(--border-2);
+    }
+    .alt-col ul { list-style: none; }
+    .alt-col li {
+      font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+      color: var(--cream);
+      padding: 4px 0;
+      display: flex; justify-content: space-between; gap: 8px;
+    }
+    .alt-col .t { color: var(--teal-lt); font-family: 'SF Mono', 'Courier New', monospace; font-weight: 700; }
+    .alt-col .n { color: var(--cream-2); font-size: 0.9em; }
+
+    /* ── Custody table ── */
+    .custody-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 1.8vw, 24px);
+      margin-top: clamp(12px, 1.6vw, 22px);
+    }
+    .custody-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(18px, 2vw, 28px);
+    }
+    .custody-card h4 {
+      font-size: clamp(1rem, 1.3vw, 1.3rem);
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .custody-card .charter {
+      font-size: clamp(0.78rem, 1vw, 1rem);
+      color: var(--teal-lt);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .custody-card p {
+      font-size: clamp(0.85rem, 1.05vw, 1.08rem);
+      color: var(--cream-2);
+      line-height: 1.4;
+    }
+
+    /* ── Tax considerations ── */
+    .tax-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2vw, 28px);
+      margin-top: clamp(12px, 1.6vw, 22px);
+    }
+    .tax-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(22px, 2.6vw, 34px);
+    }
+    .tax-card .hdr {
+      font-size: clamp(0.75rem, 0.95vw, 0.95rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .tax-card h4 {
+      font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .tax-card p {
+      font-size: clamp(0.88rem, 1.1vw, 1.1rem);
+      color: var(--cream-2);
+      line-height: 1.5;
+    }
+
+    /* ── Flag lists ── */
+    .flags-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(22px, 3vw, 44px);
+      margin-top: clamp(10px, 1.4vw, 18px);
+    }
+    .flag-list { list-style: none; }
+    .flag-list li {
+      display: flex; gap: clamp(10px, 1.2vw, 16px);
+      padding: clamp(10px, 1.2vw, 14px) 0;
+      border-bottom: 1px solid var(--border);
+      font-size: clamp(0.98rem, 1.3vw, 1.3rem);
+      color: var(--cream);
+      line-height: 1.4;
+    }
+    .flag-list li:last-child { border-bottom: none; }
+    .flag-list .ic {
+      flex-shrink: 0;
+      font-size: clamp(1rem, 1.3vw, 1.3rem);
+    }
+    .flag-list .hl { color: var(--gold); font-weight: 700; }
+
+    /* ── Scammer quotes ── */
+    .scam-quotes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(14px, 1.8vw, 24px);
+      margin-top: clamp(10px, 1.4vw, 18px);
+    }
+    .quote {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--red);
+      padding: clamp(16px, 2vw, 26px);
+      border-radius: var(--radius);
+      font-size: clamp(0.98rem, 1.3vw, 1.3rem);
+      color: var(--cream);
+      font-style: italic;
+      line-height: 1.4;
+    }
+    .quote::before { content: '\201C'; color: var(--red); font-size: 1.4em; margin-right: 6px; font-family: Georgia, serif; }
+    .quote::after  { content: '\201D'; color: var(--red); font-size: 1.4em; margin-left: 6px;  font-family: Georgia, serif; }
+    .counter-callout {
+      margin-top: clamp(20px, 2.6vw, 36px);
+      padding: clamp(18px, 2.2vw, 30px);
+      background: linear-gradient(135deg, rgba(26,154,154,0.18), rgba(26,154,154,0.06));
+      border: 1px solid rgba(78,196,196,0.35);
+      border-radius: var(--radius);
+      font-size: clamp(1rem, 1.4vw, 1.45rem);
+      color: var(--cream);
+    }
+    .counter-callout strong { color: var(--teal-lt); }
+
+    /* ── Scam types ── */
+    .scam-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2vw, 28px);
+      margin-top: clamp(12px, 1.6vw, 22px);
+    }
+    .scam-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--red);
+      border-radius: var(--radius);
+      padding: clamp(20px, 2.4vw, 32px);
+    }
+    .scam-card .ic {
+      font-size: clamp(2rem, 2.8vw, 2.6rem);
+      margin-bottom: clamp(8px, 1vw, 12px);
+    }
+    .scam-card h4 {
+      font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scam-card p {
+      font-size: clamp(0.88rem, 1.1vw, 1.12rem);
+      color: var(--cream-2);
+      line-height: 1.4;
+    }
+
+    /* ── Checklist (interactive) ── */
+    .checklist {
+      margin-top: clamp(12px, 1.6vw, 20px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(8px, 1.2vw, 14px) clamp(22px, 3vw, 40px);
+    }
+    .check-item {
+      display: flex; align-items: flex-start; gap: clamp(12px, 1.4vw, 18px);
+      padding: clamp(10px, 1.2vw, 16px);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: clamp(0.95rem, 1.25vw, 1.25rem);
+      color: var(--cream);
+      line-height: 1.4;
+      user-select: none;
+    }
+    .check-item:hover { background: rgba(250,248,243,0.04); }
+    .check-item input {
+      appearance: none;
+      width: clamp(22px, 1.6vw, 28px);
+      height: clamp(22px, 1.6vw, 28px);
+      border: 2px solid var(--border-2);
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      cursor: pointer;
+      position: relative;
+      background: transparent;
+      transition: all 0.15s;
+    }
+    .check-item input:checked {
+      background: var(--red);
+      border-color: var(--red);
+    }
+    .check-item input:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-weight: 800;
+      font-size: clamp(14px, 1.1vw, 18px);
+    }
+    .check-item.checked { color: var(--cream); }
+    .checklist-verdict {
+      margin-top: clamp(18px, 2.4vw, 32px);
+      padding: clamp(18px, 2.2vw, 30px);
+      border-radius: var(--radius);
+      font-size: clamp(1.05rem, 1.5vw, 1.55rem);
+      font-weight: 700;
+      text-align: center;
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      color: var(--cream-2);
+      transition: all 0.25s;
+    }
+    .checklist-verdict.low    { border-color: rgba(16,185,129,0.45); background: rgba(16,185,129,0.12); color: #6ee7b7; }
+    .checklist-verdict.medium { border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.12); color: #fcd34d; }
+    .checklist-verdict.high   { border-color: rgba(239,68,68,0.5);   background: rgba(239,68,68,0.14);  color: #fca5a5; }
+
+    /* ── Reporting resources ── */
+    .resources {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(16px, 2vw, 28px);
+      margin-top: clamp(12px, 1.6vw, 22px);
+    }
+    .res-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(22px, 2.6vw, 36px);
+      text-align: center;
+    }
+    .res-card .ic {
+      font-size: clamp(2rem, 2.6vw, 2.4rem);
+      margin-bottom: clamp(8px, 1vw, 12px);
+    }
+    .res-card h4 {
+      font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .res-card a, .res-card .addr {
+      font-size: clamp(0.9rem, 1.15vw, 1.15rem);
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .res-card a:hover { color: var(--teal-lt); text-decoration: underline; }
+
+    /* ── Contact cards ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(18px, 2.4vw, 32px);
+      margin-top: clamp(14px, 2vw, 26px);
+    }
+    .contact-card {
+      background: rgba(250,248,243,0.04);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: clamp(24px, 2.8vw, 38px);
+    }
+    .contact-card h4 {
+      font-size: clamp(1.2rem, 1.6vw, 1.65rem);
+      color: var(--cream);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .contact-card .role {
+      font-size: clamp(0.85rem, 1.05vw, 1.08rem);
+      color: var(--gold);
+      margin-bottom: clamp(10px, 1.2vw, 16px);
+    }
+    .contact-card ul { list-style: none; }
+    .contact-card li {
+      font-size: clamp(0.88rem, 1.12vw, 1.12rem);
+      color: var(--cream-2);
+      padding: 4px 0;
+      line-height: 1.4;
+    }
+    .contact-card a { color: var(--teal-lt); text-decoration: none; }
+    .contact-card a:hover { text-decoration: underline; }
+
+    /* ── Closing slide ── */
+    .close-slide {
+      align-items: center; text-align: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(227,191,92,0.10), transparent 55%);
+    }
+    .close-slide h1 {
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: clamp(16px, 2vw, 32px);
+    }
+    .close-slide .sub {
+      font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+      color: var(--cream-2);
+      margin-bottom: clamp(30px, 4vw, 56px);
+      max-width: 58ch;
+    }
+    .close-qr {
+      background: rgba(250,248,243,0.06);
+      border: 1px solid var(--border-2);
+      padding: clamp(20px, 2.4vw, 34px);
+      border-radius: var(--radius);
+      display: inline-block;
+    }
+    .close-qr svg {
+      width: clamp(220px, 22vw, 340px);
+      height: clamp(220px, 22vw, 340px);
+      display: block;
+    }
+    .close-qr .qr-label {
+      margin-top: clamp(14px, 1.6vw, 20px);
+      font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream-2);
+    }
+    .close-qr .qr-url {
+      margin-top: 4px;
+      font-size: clamp(1.1rem, 1.5vw, 1.55rem);
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    /* ── Chrome: progress + counter + nav hints ── */
+    #progress {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(250,248,243,0.06);
+      z-index: 50;
+    }
+    #progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal-lt), var(--gold));
+      width: 0;
+      transition: width 0.3s ease;
+    }
+    #counter {
+      position: fixed;
+      bottom: clamp(16px, 1.6vw, 26px);
+      right: clamp(20px, 2vw, 32px);
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      color: var(--cream-3);
+      letter-spacing: 0.12em;
+      z-index: 50;
+      font-variant-numeric: tabular-nums;
+    }
+    #counter .cur { color: var(--gold); font-weight: 700; }
+    #brand {
+      position: fixed;
+      bottom: clamp(16px, 1.6vw, 26px);
+      left: clamp(20px, 2vw, 32px);
+      font-size: clamp(0.72rem, 0.88vw, 0.88rem);
+      color: var(--cream-3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 50;
+    }
+    #brand span { color: var(--gold); }
+    #hint {
+      position: fixed;
+      bottom: clamp(16px, 1.6vw, 26px);
+      left: 50%; transform: translateX(-50%);
+      font-size: clamp(0.72rem, 0.85vw, 0.85rem);
+      color: var(--cream-3);
+      letter-spacing: 0.1em;
+      z-index: 50;
+      opacity: 1;
+      transition: opacity 0.6s ease 1.5s;
+    }
+    body.moved #hint { opacity: 0; }
+
+    /* Click zones for navigation */
+    .click-zone {
+      position: fixed; top: 0; bottom: 0;
+      width: 12%;
+      z-index: 30;
+      cursor: pointer;
+    }
+    .click-zone.left  { left: 0; }
+    .click-zone.right { right: 0; }
+
+    /* ── Overview grid (ESC) ── */
+    #overview {
+      position: fixed; inset: 0;
+      background: rgba(10,18,32,0.98);
+      z-index: 100;
+      padding: clamp(40px, 6vw, 80px);
+      overflow-y: auto;
+      display: none;
+    }
+    #overview.show { display: block; }
+    #overview h2 {
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+      color: var(--cream);
+      margin-bottom: clamp(20px, 2.4vw, 32px);
+      letter-spacing: 0.04em;
+    }
+    #overview h2 span { color: var(--gold); }
+    .ov-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: clamp(14px, 1.6vw, 22px);
+    }
+    .ov-thumb {
+      background: rgba(250,248,243,0.04);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: clamp(14px, 1.6vw, 22px);
+      cursor: pointer;
+      aspect-ratio: 16/9;
+      display: flex; flex-direction: column;
+      transition: all 0.15s;
+    }
+    .ov-thumb:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .ov-thumb.current { border-color: var(--gold); background: rgba(227,191,92,0.1); }
+    .ov-num {
+      font-size: clamp(0.72rem, 0.9vw, 0.9rem);
+      color: var(--cream-3);
+      letter-spacing: 0.1em;
+      margin-bottom: clamp(6px, 0.8vw, 10px);
+    }
+    .ov-title {
+      font-size: clamp(0.92rem, 1.1vw, 1.1rem);
+      color: var(--cream);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 900px) {
+      .stats, .roles, .reg-grid, .framework, .custody-grid, .tax-grid, .scam-grid, .resources, .alt-cols, .contact-grid, .checklist, .flags-two, .scam-quotes {
+        grid-template-columns: 1fr 1fr;
+      }
+      .title-qr { position: static; margin-top: 24px; }
+    }
+    @media (max-width: 640px) {
+      .stats, .roles, .reg-grid, .framework, .custody-grid, .tax-grid, .scam-grid, .resources, .alt-cols, .contact-grid, .checklist, .flags-two, .scam-quotes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Print-safe fallback */
+    @media print {
+      html, body { overflow: visible; height: auto; }
+      .slide { position: relative; opacity: 1; transform: none; page-break-after: always; }
+      #progress, #counter, #brand, #hint, .click-zone, #overview { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"><div id="progress-fill"></div></div>
+<div id="brand">Petty Ferguson <span>Consulting</span></div>
+<div id="counter"><span class="cur">1</span> / <span class="total">20</span></div>
+<div id="hint">← → or Space to advance · ESC for overview · F for fullscreen</div>
+<div class="click-zone left"  data-nav="prev"></div>
+<div class="click-zone right" data-nav="next"></div>
+
+<div id="deck">
+
+<!-- =================== 1. TITLE =================== -->
+<section class="slide title-slide" data-title="Title">
+  <div class="brand">Northwestern Mutual · April 2026 · <span>Petty Ferguson Consulting</span></div>
+  <h1>
+    Digital Assets<span class="divider"></span>
+    <span class="gold">A Practical Guide</span><br />
+    for Financial Advisors
+  </h1>
+  <p class="sub">Tools, references, and frameworks to help you navigate crypto conversations with clients — confidently and safely.</p>
+  <div class="presenters">
+    <div class="presenter">
+      <span class="name">Demetrick Ferguson</span>
+      <span class="role">Digital Asset Advisory</span>
+    </div>
+    <div class="presenter">
+      <span class="name">Dr. Corey Petty</span>
+      <span class="role">Crypto Security &amp; Infrastructure</span>
+    </div>
+  </div>
+  <div class="title-qr">
+    <div class="qr-box" data-qr></div>
+    <div class="qr-label">Scan for resources</div>
+    <div class="qr-url">petty-ferguson.com</div>
+  </div>
+</section>
+
+<!-- =================== 2. CLIENTS ARE ALREADY HERE =================== -->
+<section class="slide" data-title="Your clients are already here">
+  <div class="eyebrow">State of the market · 2026</div>
+  <h2 class="slide-title">Your clients <span class="gold">are already here</span>.</h2>
+  <p class="lede">This isn't a "maybe someday" asset class. It's on your clients' balance sheets today — whether you've discussed it or not.</p>
+  <div class="stats">
+    <div class="stat">
+      <div class="num">17%</div>
+      <div class="label">of US investors with $10K+ in traditional assets now hold crypto</div>
+      <div class="src">Security.org 2026 Crypto Adoption Report</div>
+    </div>
+    <div class="stat">
+      <div class="num">$95B+</div>
+      <div class="label">in Bitcoin spot ETF assets across 11 US ETFs</div>
+      <div class="src">BitcoinTreasuries.com / ETF provider data, April 2026</div>
+    </div>
+    <div class="stat">
+      <div class="num">42%</div>
+      <div class="label">of financial advisors can now buy crypto directly in client accounts</div>
+      <div class="src">Bitwise/VettaFi 2026 Benchmark Survey</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 3. BUT THE LOSSES =================== -->
+<section class="slide" data-title="The losses are staggering">
+  <div class="eyebrow">The other side of the ledger</div>
+  <h2 class="slide-title">But the losses are <span class="gold">staggering</span>.</h2>
+  <p class="lede">Fraud hit a record high in 2025. Seniors are the most-targeted demographic. Your clients are in the crosshairs.</p>
+  <div class="stats">
+    <div class="stat red">
+      <div class="num">$11.4B</div>
+      <div class="label">in crypto-related fraud losses in 2025 — up 22% year-over-year</div>
+      <div class="src">FBI IC3 2025 Annual Report</div>
+    </div>
+    <div class="stat red">
+      <div class="num">$7.2B</div>
+      <div class="label">lost to crypto investment fraud ("pig butchering") — the single largest scam category</div>
+      <div class="src">FBI IC3 2025 Annual Report</div>
+    </div>
+    <div class="stat red">
+      <div class="num">$4.4B</div>
+      <div class="label">lost by adults over 60 alone — the most-targeted demographic</div>
+      <div class="src">FBI IC3 2025 Annual Report</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 4. YOUR ROLE =================== -->
+<section class="slide" data-title="Your role">
+  <div class="eyebrow">The advisor equation</div>
+  <h2 class="slide-title">So what's <span class="gold">your role</span>?</h2>
+  <div class="roles">
+    <div class="role-card working">
+      <div class="ic">📈</div>
+      <h3>What's working</h3>
+      <p>Spot ETFs brought institutional access. Stablecoins are processing trillions. Regulatory frameworks are emerging. Advisor access has doubled since 2023.</p>
+    </div>
+    <div class="role-card concerning">
+      <div class="ic">⚠️</div>
+      <h3>What's concerning</h3>
+      <p>Volatility persists. Fraud hit a record $11.4B. Seniors lost $4.4B. Political entanglement with crypto creates regulatory uncertainty.</p>
+    </div>
+    <div class="role-card role">
+      <div class="ic">🧭</div>
+      <h3>Your role</h3>
+      <p>Clients are making crypto decisions without you. Advisors who engage — even at a basic literacy level — catch scams, improve risk management, and keep AUM that would otherwise walk out the door.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 5. TIMELINE =================== -->
+<section class="slide" data-title="How we got here">
+  <div class="eyebrow">Context · 2008 – 2026</div>
+  <h2 class="slide-title">How we <span class="gold">got here</span>.</h2>
+  <div class="timeline-wrap">
+    <div class="tl-row"><div class="tl-year">2008</div><div class="tl-text">Satoshi Nakamoto publishes the Bitcoin whitepaper.</div></div>
+    <div class="tl-row"><div class="tl-year">2009</div><div class="tl-text">Bitcoin network launches; genesis block mined January 3.</div></div>
+    <div class="tl-row"><div class="tl-year">2013–2017</div><div class="tl-text">First exchange collapses (Mt. Gox 2014); ICO boom and bust.</div></div>
+    <div class="tl-row"><div class="tl-year">2020–2021</div><div class="tl-text">Institutional entry begins; BTC crosses $60K; DeFi and NFT cycles.</div></div>
+    <div class="tl-row"><div class="tl-year">2022</div><div class="tl-text">Terra/Luna, Celsius, BlockFi, Voyager, and FTX collapse. ~$2T in market cap wiped out.</div></div>
+    <div class="tl-row"><div class="tl-year">2024</div><div class="tl-text">SEC approves spot Bitcoin ETFs (Jan 10); spot Ethereum ETFs follow in July.</div></div>
+    <div class="tl-row"><div class="tl-year">2025</div><div class="tl-text">Regulatory reset: Atkins confirmed, SAB 121 rescinded, GENIUS Act signed, Strategic Bitcoin Reserve established, major SEC cases dismissed.</div></div>
+    <div class="tl-row"><div class="tl-year">2026</div><div class="tl-text">SEC/CFTC joint release classifies 16 assets as non-securities. Spot ETFs exist for BTC, ETH, SOL, XRP, LTC, HBAR, DOGE.</div></div>
+  </div>
+</section>
+
+<!-- =================== 6. REGULATORY RESET =================== -->
+<section class="slide" data-title="The 2025 regulatory reset">
+  <div class="eyebrow">Regulatory landscape</div>
+  <h2 class="slide-title">The <span class="gold">2025 regulatory reset</span>.</h2>
+  <p class="lede">The playing field changed dramatically in 2025. Banks can now custody crypto. Stablecoins have federal regulation. Enforcement cases dropped.</p>
+  <div class="reg-grid">
+    <div class="reg-item">
+      <span class="reg-tag agency">Agency Leadership</span>
+      <h4>Paul Atkins — SEC Chair</h4>
+      <p>Confirmed April 2025. Replaced Gary Gensler. Shifted the SEC from enforcement-first to rulemaking-first.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag law">Signed Into Law</span>
+      <h4>SAB 122 — January 2025</h4>
+      <p>Rescinded SAB 121 — crypto custody no longer requires balance-sheet liability treatment. This is why banks can now custody digital assets.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag law">Signed Into Law</span>
+      <h4>GENIUS Act — July 2025</h4>
+      <p>First federal digital asset law. Regulates payment stablecoins. Effective ~November 2026.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag eo">Executive Order</span>
+      <h4>Strategic Bitcoin Reserve — March 2025</h4>
+      <p>Government holds ~200,000 BTC from forfeitures; will not sell. Establishes BTC as a strategic reserve asset.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 7. WHERE THE RULES STAND =================== -->
+<section class="slide" data-title="Where the rules stand">
+  <div class="eyebrow">April 2026 snapshot</div>
+  <h2 class="slide-title">Where the rules <span class="gold">stand today</span>.</h2>
+  <div class="reg-grid">
+    <div class="reg-item">
+      <span class="reg-tag pending">Pending</span>
+      <h4>CLARITY Act</h4>
+      <p>Passed House July 2025; stalled in Senate. Would establish CFTC jurisdiction over digital commodity spot markets. Not yet law.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag agency">Joint Release</span>
+      <h4>SEC / CFTC Interpretive Release — March 2026</h4>
+      <p>Classified 16 named digital assets (BTC, ETH, XRP, SOL among them) as non-securities. Establishes current token taxonomy.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag law">Enforcement Reset</span>
+      <h4>Major cases dismissed</h4>
+      <p>Coinbase (Feb 2025), Kraken (Mar 2025), Binance (May 2025), Ripple (Aug 2025). Fraud cases continue; regulatory-overreach cases dropped.</p>
+    </div>
+    <div class="reg-item">
+      <span class="reg-tag agency">Agency Leadership</span>
+      <h4>Michael Selig — CFTC Chair</h4>
+      <p>Confirmed December 2025. Overseeing expanded CFTC role in digital commodity spot markets.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 8. FRAMEWORK =================== -->
+<section class="slide" data-title="Conservative framework">
+  <div class="eyebrow">The playbook</div>
+  <h2 class="slide-title">A <span class="gold">conservative framework</span> for client portfolios.</h2>
+  <p class="lede">If a client wants exposure, here's the framework that keeps the conversation grounded in portfolio theory, not speculation.</p>
+  <div class="framework">
+    <div class="fw-item"><div class="k">Allocation</div><div class="v">1–5%<br/><span style="font-size:0.6em; color:var(--cream-2); font-weight:400;">of total portfolio</span></div></div>
+    <div class="fw-item"><div class="k">Asset</div><div class="v">Bitcoin only<br/><span style="font-size:0.6em; color:var(--cream-2); font-weight:400;">via regulated ETF</span></div></div>
+    <div class="fw-item"><div class="k">Entry method</div><div class="v">Dollar-cost average<br/><span style="font-size:0.6em; color:var(--cream-2); font-weight:400;">over 6–12 months</span></div></div>
+    <div class="fw-item"><div class="k">Rebalance</div><div class="v">When exceeded<br/><span style="font-size:0.6em; color:var(--cream-2); font-weight:400;">target allocation</span></div></div>
+  </div>
+</section>
+
+<!-- =================== 9. ETF TABLE =================== -->
+<section class="slide" data-title="Bitcoin spot ETFs">
+  <div class="eyebrow">Product reference</div>
+  <h2 class="slide-title">Bitcoin spot ETFs — <span class="gold">at a glance</span>.</h2>
+  <table class="etf-table">
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Sponsor</th>
+        <th>Expense</th>
+        <th>Est. AUM</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="ticker">IBIT</span></td><td>BlackRock</td><td>0.25%</td><td>~$56B</td><td><span class="badge green">Most liquid</span></td></tr>
+      <tr><td><span class="ticker">FBTC</span></td><td>Fidelity</td><td>0.25%</td><td>~$15B</td><td><span class="badge green">Most liquid</span></td></tr>
+      <tr><td><span class="ticker">BTC</span></td><td>Grayscale Mini</td><td>0.15%</td><td>~$4B</td><td><span class="badge green">Lowest cost</span></td></tr>
+      <tr><td><span class="ticker">ARKB</span></td><td>ARK / 21Shares</td><td>0.21%</td><td>~$3.5B</td><td><span class="badge amber">Solid option</span></td></tr>
+      <tr><td><span class="ticker">BITB</span></td><td>Bitwise</td><td>0.20%</td><td>~$3B</td><td><span class="badge amber">Solid option</span></td></tr>
+      <tr><td><span class="ticker">GBTC</span></td><td>Grayscale</td><td>1.50%</td><td>~$15B</td><td><span class="badge red">Avoid — high fee</span></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:clamp(12px,1.5vw,22px); font-size:clamp(0.8rem,1vw,1rem); color:var(--cream-3);">
+    Curated selection. Confirm NWM platform availability and current pricing before recommending. Educational reference only.
+  </p>
+</section>
+
+<!-- =================== 10. BEYOND BITCOIN =================== -->
+<section class="slide" data-title="Beyond Bitcoin">
+  <div class="eyebrow">The expanding universe</div>
+  <h2 class="slide-title"><span class="gold">Beyond</span> Bitcoin.</h2>
+  <p class="lede">The spot ETF universe expanded fast. These are newer and less liquid than BTC ETFs — same disclosure caveats apply.</p>
+  <div class="alt-cols">
+    <div class="alt-col">
+      <h4>Ethereum</h4>
+      <ul>
+        <li><span class="t">ETHA</span><span class="n">BlackRock</span></li>
+        <li><span class="t">FETH</span><span class="n">Fidelity</span></li>
+        <li><span class="t">ETH</span><span class="n">Grayscale Mini</span></li>
+        <li><span class="t">ETHB</span><span class="n">BlackRock (staking)</span></li>
+      </ul>
+    </div>
+    <div class="alt-col">
+      <h4>Solana</h4>
+      <ul>
+        <li><span class="t">BSOL</span><span class="n">Bitwise</span></li>
+        <li><span class="t">FSOL</span><span class="n">Fidelity</span></li>
+        <li><span class="t">VSOL</span><span class="n">VanEck</span></li>
+        <li><span class="t">TSOL</span><span class="n">21Shares</span></li>
+      </ul>
+    </div>
+    <div class="alt-col">
+      <h4>XRP</h4>
+      <ul>
+        <li><span class="t">XRPC</span><span class="n">Canary</span></li>
+        <li><span class="t">XRP</span><span class="n">Bitwise</span></li>
+        <li><span class="t">EZRP</span><span class="n">Franklin</span></li>
+        <li><span class="t">TOXR</span><span class="n">21Shares</span></li>
+      </ul>
+    </div>
+    <div class="alt-col">
+      <h4>Others</h4>
+      <ul>
+        <li><span class="t">LTCC</span><span class="n">Litecoin</span></li>
+        <li><span class="t">HBR</span><span class="n">HBAR</span></li>
+        <li><span class="t">DOJE</span><span class="n">Dogecoin</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 11. CUSTODY =================== -->
+<section class="slide" data-title="Custody options for RIAs">
+  <div class="eyebrow">Who holds the keys</div>
+  <h2 class="slide-title"><span class="gold">Custody</span> options for RIAs.</h2>
+  <div class="custody-grid">
+    <div class="custody-card">
+      <h4>Fidelity Digital Assets</h4>
+      <div class="charter">NY trust + OCC national trust charter</div>
+      <p>Backed by $4T+ parent. $100M+ insurance.</p>
+    </div>
+    <div class="custody-card">
+      <h4>Coinbase Custody</h4>
+      <div class="charter">NYDFS trust charter</div>
+      <p>Primary custodian for most spot crypto ETFs.</p>
+    </div>
+    <div class="custody-card">
+      <h4>BitGo</h4>
+      <div class="charter">OCC national bank charter (Dec 2025)</div>
+      <p>$250M insurance. $90B+ assets under custody.</p>
+    </div>
+    <div class="custody-card">
+      <h4>Anchorage Digital</h4>
+      <div class="charter">OCC federal bank charter (Jan 2021)</div>
+      <p>First crypto-native federal bank.</p>
+    </div>
+    <div class="custody-card">
+      <h4>BNY Mellon</h4>
+      <div class="charter">Traditional bank</div>
+      <p>Integrated crypto into traditional custody services.</p>
+    </div>
+    <div class="custody-card">
+      <h4>Gemini Trust</h4>
+      <div class="charter">NYDFS regulated</div>
+      <p>$125M insurance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 12. TAX =================== -->
+<section class="slide" data-title="Tax considerations">
+  <div class="eyebrow">What's changed</div>
+  <h2 class="slide-title"><span class="gold">Tax</span> considerations.</h2>
+  <div class="tax-grid">
+    <div class="tax-card">
+      <div class="hdr">New for 2025</div>
+      <h4>Form 1099-DA</h4>
+      <p>Brokers issued first 1099-DAs in Feb 2026, reporting gross proceeds only. Cost basis becomes mandatory for the 2026 tax year on assets acquired January 2026 or later at the same broker.</p>
+    </div>
+    <div class="tax-card">
+      <div class="hdr">Tax-loss harvesting</div>
+      <h4>Wash sale gap (for now)</h4>
+      <p>Wash sale rules don't apply to directly held crypto — it's property, not a security. Sell at a loss and immediately repurchase. Bipartisan proposals to close this gap are active.</p>
+    </div>
+    <div class="tax-card">
+      <div class="hdr">Watch the structure</div>
+      <h4>ETFs ≠ direct holdings</h4>
+      <p>Spot crypto ETFs are securities for tax purposes — wash sale rules DO apply. Distinguish between direct crypto holdings and ETF exposure when modeling client scenarios.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 13. LANGUAGE RED FLAGS =================== -->
+<section class="slide" data-title="Red flags — language">
+  <div class="eyebrow">Scam protection · Part 1</div>
+  <h2 class="slide-title">Red flags: <span class="gold">what they say</span>.</h2>
+  <p class="lede">When a client mentions a crypto "opportunity," listen for the language first. These phrases are near-universal scam tells.</p>
+  <div class="flags-two">
+    <ul class="flag-list">
+      <li><span class="ic">🔴</span><span><span class="hl">"Guaranteed returns"</span> — no legitimate investment guarantees anything.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"Risk-free"</span> — crypto is inherently volatile; this is a lie.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"Limited time offer"</span> — pressure tactics; real opportunities don't expire in 24 hours.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"Double your money"</span> — classic scam promise.</span></li>
+    </ul>
+    <ul class="flag-list">
+      <li><span class="ic">🔴</span><span><span class="hl">"Only insiders know"</span> — if it were real, they wouldn't tell strangers.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"The next Bitcoin"</span> — nearly all alternative tokens fail.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"Celebrity X endorsed this"</span> — fake endorsements are rampant; verify independently.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">"Keep this secret"</span> — isolation is always the goal.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== 14. CHANNEL RED FLAGS =================== -->
+<section class="slide" data-title="Red flags — channels">
+  <div class="eyebrow">Scam protection · Part 2</div>
+  <h2 class="slide-title">Red flags: <span class="gold">where it happens</span>.</h2>
+  <p class="lede">The channel matters as much as the pitch. Legitimate investment advice does not arrive via Telegram DM.</p>
+  <div class="flags-two">
+    <ul class="flag-list">
+      <li><span class="ic">🔴</span><span>Unsolicited DM on <span class="hl">Telegram, WhatsApp, or Discord</span>.</span></li>
+      <li><span class="ic">🔴</span><span>Social media <span class="hl">comments and replies</span> — impersonation is trivial.</span></li>
+      <li><span class="ic">🔴</span><span><span class="hl">Dating app match</span> — the "pig butchering" vector.</span></li>
+    </ul>
+    <ul class="flag-list">
+      <li><span class="ic">🔴</span><span>A "friend" <span class="hl">never met in person</span>.</span></li>
+      <li><span class="ic">🔴</span><span>Unsolicited email with an investment opportunity.</span></li>
+      <li><span class="ic">🟡</span><span><span class="hl">YouTube / TikTok influencers</span> — many are paid promoters, not advisors.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== 15. WHAT SCAMMERS SAY ABOUT YOU =================== -->
+<section class="slide" data-title="What scammers say about you">
+  <div class="eyebrow">The isolation playbook</div>
+  <h2 class="slide-title">What scammers say <span class="gold">about you</span>.</h2>
+  <p class="lede">These lines are designed to wedge clients away from trusted advisors. If a client repeats them, a scammer is already in the conversation.</p>
+  <div class="scam-quotes">
+    <div class="quote">What are their credentials?</div>
+    <div class="quote">They know old money — what do they know about new money?</div>
+    <div class="quote">They just want fees; that's why they don't care about crypto.</div>
+    <div class="quote">Are they protecting you, or preventing you?</div>
+    <div class="quote">Do they even have Telegram?</div>
+    <div class="quote">Don't tell your advisor until the returns come in.</div>
+  </div>
+  <div class="counter-callout">
+    <strong>Your literacy is your best counter-argument.</strong> When a client brings these up, you don't need to know everything about crypto — you need to know more than the scammer wants them to.
+  </div>
+</section>
+
+<!-- =================== 16. SCAM TYPES =================== -->
+<section class="slide" data-title="Common scam types">
+  <div class="eyebrow">Know the patterns</div>
+  <h2 class="slide-title"><span class="gold">Common</span> scam types.</h2>
+  <div class="scam-grid">
+    <div class="scam-card">
+      <div class="ic">💔</div>
+      <h4>Pig Butchering</h4>
+      <p>Fake romance → trust-building → "investment" → funds drained over months.</p>
+    </div>
+    <div class="scam-card">
+      <div class="ic">🏦</div>
+      <h4>Fake Exchange</h4>
+      <p>Convincing website, shows fake gains, blocks withdrawals when the client tries to pull funds.</p>
+    </div>
+    <div class="scam-card">
+      <div class="ic">🎭</div>
+      <h4>Impersonation</h4>
+      <p>Pretends to be Coinbase support, a celebrity, or a known project. Common on X and Telegram.</p>
+    </div>
+    <div class="scam-card">
+      <div class="ic">🏃</div>
+      <h4>Rug Pull</h4>
+      <p>Legitimate-looking project, polished website, team disappears with the liquidity pool.</p>
+    </div>
+    <div class="scam-card">
+      <div class="ic">📧</div>
+      <h4>Phishing</h4>
+      <p>Fake emails or sites that capture exchange logins or wallet seed phrases.</p>
+    </div>
+    <div class="scam-card">
+      <div class="ic">📈</div>
+      <h4>Pump &amp; Dump</h4>
+      <p>Coordinated hype on a worthless token. Organizers sell high; buyers are left holding nothing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 17. CLIENT CHECKLIST (INTERACTIVE) =================== -->
+<section class="slide" data-title="The client checklist">
+  <div class="eyebrow">Use this in your next client meeting</div>
+  <h2 class="slide-title">The <span class="gold">client checklist</span>.</h2>
+  <p class="lede">Before any crypto decision, walk the client through these questions. <strong style="color:var(--gold);">Click to check each box that applies.</strong></p>
+  <div class="checklist" id="checklist">
+    <label class="check-item"><input type="checkbox"><span>Did someone approach <em>you</em>, or did you find <em>them</em>?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Are you being asked to act quickly?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Were you asked to move funds to a new wallet or exchange?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Are returns described as "guaranteed" or "risk-free"?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Is the communication on Telegram, WhatsApp, or Discord?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Did a romantic interest introduce you to this?</span></label>
+    <label class="check-item"><input type="checkbox"><span>Are you asked to keep this secret from family or your advisor?</span></label>
+  </div>
+  <div class="checklist-verdict" id="verdict">
+    0 boxes checked — no signal yet. Keep working through the list.
+  </div>
+</section>
+
+<!-- =================== 18. REPORTING RESOURCES =================== -->
+<section class="slide" data-title="Reporting resources">
+  <div class="eyebrow">When something's already gone wrong</div>
+  <h2 class="slide-title">Reporting <span class="gold">resources</span>.</h2>
+  <p class="lede">Clients come to you after the fact more often than you'd like. These are the first four calls — in order.</p>
+  <div class="resources">
+    <div class="res-card">
+      <div class="ic">🚨</div>
+      <h4>FBI IC3</h4>
+      <div class="addr">ic3.gov</div>
+    </div>
+    <div class="res-card">
+      <div class="ic">⚖️</div>
+      <h4>FTC</h4>
+      <div class="addr">reportfraud.ftc.gov</div>
+    </div>
+    <div class="res-card">
+      <div class="ic">🏛️</div>
+      <h4>SEC</h4>
+      <div class="addr">sec.gov/tcr</div>
+    </div>
+    <div class="res-card">
+      <div class="ic">🗺️</div>
+      <h4>State AG</h4>
+      <div class="addr">Varies by state</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 19. CONTACT =================== -->
+<section class="slide" data-title="Contact">
+  <div class="eyebrow">We're here after the session</div>
+  <h2 class="slide-title">Keep the <span class="gold">conversation</span> going.</h2>
+  <p class="lede">Questions, client situations, follow-up topics — reach out directly. We work with advisors, not just their clients.</p>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <h4>Demetrick Ferguson</h4>
+      <div class="role">Digital Asset Advisory</div>
+      <ul>
+        <li>10+ years management consulting</li>
+        <li>Founder, The Bitcoin Podcast (4.5M+ downloads)</li>
+        <li>BA Mathematics, Texas Tech</li>
+        <li style="margin-top:10px;"><a href="https://fergulati.com" target="_blank" rel="noopener">fergulati.com</a></li>
+      </ul>
+    </div>
+    <div class="contact-card">
+      <h4>Dr. Corey Petty</h4>
+      <div class="role">Crypto Security · Infrastructure</div>
+      <ul>
+        <li>PhD, Computational Chemical Physics, Texas Tech</li>
+        <li>Blockchain curriculum, Accenture</li>
+        <li>Chief Evangelist, IFT</li>
+        <li style="margin-top:10px;"><a href="mailto:corey@petty.services">corey@petty.services</a></li>
+      </ul>
+    </div>
+    <div class="contact-card">
+      <h4>Petty Ferguson Consulting</h4>
+      <div class="role">Digital asset education</div>
+      <ul>
+        <li>Advisor literacy workshops</li>
+        <li>Client-facing crypto risk reviews</li>
+        <li>Scam identification &amp; response</li>
+        <li>Institutional crypto strategy</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 20. THANK YOU / QR =================== -->
+<section class="slide close-slide" data-title="Thank you">
+  <div class="eyebrow">Thank you</div>
+  <h1><span class="gold">Everything</span> from today.</h1>
+  <p class="sub">Every slide, every reference, every download — free for you and your clients.</p>
+  <div class="close-qr">
+    <div data-qr></div>
+    <div class="qr-label">Scan or visit</div>
+    <div class="qr-url">petty-ferguson.com</div>
+  </div>
+</section>
+
+</div>
+
+<!-- ── Overview (ESC) ── -->
+<div id="overview">
+  <h2>Presentation Overview · <span>click any slide to jump</span></h2>
+  <div class="ov-grid" id="ov-grid"></div>
+</div>
+
+<!-- ── QR source (hidden) ── -->
+<template id="qr-source">
+  <svg viewBox="0 0 370 370" xmlns="http://www.w3.org/2000/svg"><path transform="scale(10)" stroke="#faf8f3" d="M2 2.5h7m4 0h2m1 0h1m4 0h1m1 0h2m1 0h1m1 0h7m-33 1h1m5 0h1m2 0h1m2 0h1m3 0h1m1 0h1m1 0h3m1 0h1m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h5m2 0h10m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h3m1 0h3m1 0h1m4 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h2m1 0h3m4 0h3m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m2 0h3m1 0h5m3 0h2m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h1m1 0h2m1 0h1m3 0h2m-21 1h2m1 0h2m3 0h2m3 0h1m6 0h2m4 0h2m-26 1h1m2 0h2m1 0h3m1 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h4m-29 1h2m2 0h2m1 0h1m1 0h2m1 0h2m2 0h1m2 0h1m1 0h5m3 0h2m-32 1h1m3 0h1m1 0h1m4 0h4m1 0h2m8 0h2m1 0h1m-29 1h5m1 0h2m2 0h1m2 0h1m1 0h1m2 0h3m1 0h1m1 0h1m1 0h1m2 0h2m-29 1h2m4 0h2m1 0h1m1 0h1m1 0h2m1 0h4m6 0h2m-30 1h10m2 0h1m4 0h1m6 0h1m1 0h1m1 0h1m-27 1h1m2 0h1m3 0h1m1 0h1m2 0h1m1 0h2m5 0h1m2 0h1m1 0h1m-30 1h2m2 0h2m1 0h2m2 0h2m2 0h1m1 0h1m1 0h1m4 0h6m-28 1h1m1 0h1m3 0h1m1 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h4m-28 1h1m1 0h3m3 0h1m2 0h2m1 0h2m2 0h2m1 0h1m5 0h4m-33 1h2m1 0h1m1 0h1m4 0h1m1 0h1m3 0h2m1 0h1m2 0h4m3 0h2m1 0h1m-32 1h1m1 0h4m2 0h1m1 0h1m6 0h3m5 0h1m2 0h1m2 0h1m-33 1h1m1 0h1m1 0h1m2 0h2m2 0h4m1 0h1m3 0h2m2 0h1m1 0h5m-31 1h1m2 0h4m2 0h2m2 0h4m2 0h2m1 0h2m2 0h2m2 0h3m-33 1h1m1 0h2m1 0h1m1 0h1m2 0h1m1 0h1m4 0h1m5 0h2m2 0h2m1 0h1m1 0h1m-33 1h3m3 0h1m5 0h5m3 0h1m2 0h6m2 0h2m-25 1h1m1 0h1m2 0h1m3 0h2m1 0h2m2 0h1m3 0h3m-31 1h7m1 0h1m4 0h2m5 0h1m2 0h2m1 0h1m1 0h3m-31 1h1m5 0h1m5 0h3m1 0h1m1 0h2m1 0h2m1 0h1m3 0h4m-32 1h1m1 0h3m1 0h1m1 0h1m4 0h1m3 0h2m2 0h8m2 0h1m-32 1h1m1 0h3m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m3 0h1m-32 1h1m1 0h3m1 0h1m3 0h1m1 0h3m2 0h2m9 0h2m1 0h2m-33 1h1m5 0h1m3 0h1m1 0h1m3 0h2m1 0h3m3 0h1m3 0h1m1 0h2m-33 1h7m2 0h1m1 0h2m2 0h2m4 0h1m2 0h1m3 0h1m1 0h1"/></svg>
+</template>
+
+<script>
+(function () {
+  'use strict';
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total  = slides.length;
+  const $progressFill = document.getElementById('progress-fill');
+  const $cur          = document.querySelector('#counter .cur');
+  const $totalEl      = document.querySelector('#counter .total');
+  const $overview     = document.getElementById('overview');
+  const $ovGrid       = document.getElementById('ov-grid');
+
+  $totalEl.textContent = total;
+  let idx = 0;
+
+  // Inject QR SVGs into all [data-qr] slots
+  const qrTpl = document.getElementById('qr-source');
+  document.querySelectorAll('[data-qr]').forEach(slot => {
+    slot.innerHTML = qrTpl.innerHTML;
+  });
+
+  // Build overview thumbs
+  slides.forEach((s, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'ov-thumb';
+    thumb.dataset.i = i;
+    thumb.innerHTML =
+      '<div class="ov-num">Slide ' + (i + 1) + '</div>' +
+      '<div class="ov-title">' + (s.dataset.title || '') + '</div>';
+    thumb.addEventListener('click', () => {
+      goto(i);
+      closeOverview();
+    });
+    $ovGrid.appendChild(thumb);
+  });
+
+  function render() {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === idx);
+      s.classList.toggle('prev',   i <  idx);
+    });
+    $progressFill.style.width = ((idx + 1) / total * 100) + '%';
+    $cur.textContent = idx + 1;
+    document.querySelectorAll('.ov-thumb').forEach((t, i) => {
+      t.classList.toggle('current', i === idx);
+    });
+    if (location.hash !== '#/' + (idx + 1)) {
+      history.replaceState(null, '', '#/' + (idx + 1));
+    }
+    document.body.classList.add('moved');
+  }
+
+  function goto(i) {
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  function next() { goto(idx + 1); }
+  function prev() { goto(idx - 1); }
+
+  function openOverview()  { $overview.classList.add('show'); }
+  function closeOverview() { $overview.classList.remove('show'); }
+  function toggleOverview(){ $overview.classList.toggle('show'); }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    // don't intercept typing in form fields
+    if (e.target.matches('input, textarea')) return;
+
+    if ($overview.classList.contains('show')) {
+      if (e.key === 'Escape') { closeOverview(); e.preventDefault(); return; }
+    }
+
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+      case ' ':
+        next(); e.preventDefault(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        prev(); e.preventDefault(); break;
+      case 'Home':
+        goto(0); e.preventDefault(); break;
+      case 'End':
+        goto(total - 1); e.preventDefault(); break;
+      case 'Escape':
+        toggleOverview(); e.preventDefault(); break;
+      case 'f':
+      case 'F':
+        toggleFullscreen(); e.preventDefault(); break;
+    }
+  });
+
+  // Click zones
+  document.querySelectorAll('.click-zone').forEach(z => {
+    z.addEventListener('click', () => {
+      if (z.dataset.nav === 'next') next();
+      else prev();
+    });
+  });
+
+  // Touch / swipe
+  let touchStartX = null;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+    touchStartX = null;
+  }, { passive: true });
+
+  // Deep link
+  function fromHash() {
+    const m = location.hash.match(/^#\/(\d+)/);
+    if (m) goto(parseInt(m[1], 10) - 1);
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  // Interactive checklist
+  const checklist = document.getElementById('checklist');
+  const verdict   = document.getElementById('verdict');
+  if (checklist && verdict) {
+    checklist.addEventListener('change', () => {
+      const boxes  = checklist.querySelectorAll('input[type=checkbox]');
+      const total  = boxes.length;
+      const count  = Array.from(boxes).filter(b => b.checked).length;
+      verdict.classList.remove('low', 'medium', 'high');
+      if (count === 0) {
+        verdict.textContent = '0 boxes checked — no signal yet. Keep working through the list.';
+      } else if (count === 1) {
+        verdict.classList.add('low');
+        verdict.textContent = '1 box checked — LOW signal. Worth a deeper conversation, not an alarm.';
+      } else if (count < 4) {
+        verdict.classList.add('medium');
+        verdict.textContent = count + ' boxes checked — MEDIUM probability of scam. Pause and investigate before any funds move.';
+      } else {
+        verdict.classList.add('high');
+        verdict.textContent = count + ' boxes checked — HIGH probability of scam. Stop. Do not transfer funds.';
+      }
+      // keep visual state on the item
+      Array.from(boxes).forEach(b => {
+        b.closest('.check-item').classList.toggle('checked', b.checked);
+      });
+    });
+  }
+
+  // Init
+  if (location.hash) fromHash();
+  render();
+})();
+</script>
+
+</body>
+</html>
